@@ -2,7 +2,7 @@
 ELEC1601 Robot Project Simulation
 
 **Current progress:**
-* Reduce code length
+* Reduced code length
 * Added comments to clarify functionality
 
 
