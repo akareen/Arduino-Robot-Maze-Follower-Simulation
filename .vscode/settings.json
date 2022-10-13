@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.rh": "c",
+        "wall.h": "c",
+        "time.h": "c",
+        "sdl2_gfxprimitives.h": "c",
+        "sdl.h": "c",
+        "structures.h": "c",
+        "formulas.h": "c"
+    }
+}
