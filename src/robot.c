@@ -47,7 +47,6 @@ int checkRobotHitWalls(struct Robot * robot, struct Wall_collection * head) {
 
 }
 
-
 //Returns 1 if the robot has reached the end OTHERWISE Returns 0
 int checkRobotReachedEnd(struct Robot * robot, int x, int y, int width, int height) {
     int overlap = checkOverlap(robot->x,robot->width,robot->y,robot->height,
@@ -83,7 +82,8 @@ int checkRobotSensor(int x, int y, int sensorSensitivityLength, struct Wall * wa
     return overlap;
 }
 
-
+//Checks if the robot sensor will collide with a wall
+//Functionality based on which sensor is being used 0 = Centre, 1 = Left, 2 = Right
 int checkAllWalls(struct Robot * robot, struct Wall_collection * head, int option) {
     struct Wall_collection *ptr, *head_store;
     double xDir, yDir;
@@ -126,19 +126,22 @@ int checkAllWalls(struct Robot * robot, struct Wall_collection * head, int optio
     return score;
 }
 
+//Checks if the robots sensor Front Sensor will collide with a wall
 int checkRobotSensorFrontCentreAllWalls(struct Robot * robot, struct Wall_collection * head) {
     return checkAllWalls(robot, head, 0);
 }
 
+//Checks if the robots sensor Left Sensor will collide with a wall
 int checkRobotSensorLeftAllWalls(struct Robot * robot, struct Wall_collection * head) {
     return checkAllWalls(robot, head, 1);
 }
 
+//Checks if the robots sensor Left Sensor will collide with a wall
 int checkRobotSensorRightAllWalls(struct Robot * robot, struct Wall_collection * head) {
     return checkAllWalls(robot, head, 2);
 }
 
-
+//TODO
 void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
     double xDir, yDir;
 
@@ -242,7 +245,7 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
 }
 
 
-
+//TODO
 void robotMotorMove(struct Robot * robot, int crashed) {
     double x_offset, y_offset;
     if (crashed)
@@ -281,6 +284,7 @@ void robotMotorMove(struct Robot * robot, int crashed) {
     robot->y = (int) y_offset;
 }
 
+//TODO
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_sensor, int right_sensor) {
 
     if (front_centre_sensor == 0) {
