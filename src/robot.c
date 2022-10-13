@@ -141,6 +141,8 @@ int checkRobotSensorRightAllWalls(struct Robot * robot, struct Wall_collection *
     return checkAllWalls(robot, head, 2);
 }
 
+
+
 //TODO
 void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
     double xDir, yDir;
@@ -244,44 +246,45 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
         //yDir = round(robotCentreY+(ROBOT_WIDTH/2-2)*sin((robot->angle)*PI/180)+(-ROBOT_HEIGHT/2-SENSOR_VISION+sensor_sensitivity*i)*cos((robot->angle)*PI/180));
 }
 
+void resetToMaxSpeed(struct Robot * robot) {
+    if (robot -> currentSpeed > MAX_ROBOT_SPEED)
+        robot -> currentSpeed = MAX_ROBOT_SPEED;
+}
 
-//TODO
+
+//TODO = Fix this method to make it work on smaller amounts of speed changes
+//Implement as a 0.0 - 1.0 * DEFAULT_SPEED_CHANGE, to make it a more fluid motion
+//The more fluid motion will allow tighter turns, since the servo is continuous
+//Not positional
+//
+//FINISHED = made the method more readable and concise
 void robotMotorMove(struct Robot * robot, int crashed) {
     double x_offset, y_offset;
     if (crashed)
-        robot->currentSpeed = 0;
+        robot -> currentSpeed = 0;
     else {
-        switch(robot->direction){
+        switch(robot -> direction){
             case UP :
-                robot->currentSpeed += DEFAULT_SPEED_CHANGE;
-                if (robot->currentSpeed > MAX_ROBOT_SPEED)
-                    robot->currentSpeed = MAX_ROBOT_SPEED;
-                break;
+                robot -> currentSpeed += DEFAULT_SPEED_CHANGE;
+                resetToMaxSpeed(robot); break;
             case DOWN :
                 robot->currentSpeed -= DEFAULT_SPEED_CHANGE;
-                if (robot->currentSpeed < -MAX_ROBOT_SPEED)
-                    robot->currentSpeed = -MAX_ROBOT_SPEED;
-                break;
+                resetToMaxSpeed(robot); break;
             case LEFT :
-                robot->angle = (robot->angle+360-DEFAULT_ANGLE_CHANGE)%360;
+                robot -> angle = (robot -> angle + 360 - DEFAULT_ANGLE_CHANGE) % 360;
                 break;
             case RIGHT :
-                robot->angle = (robot->angle+DEFAULT_ANGLE_CHANGE)%360;
+                robot -> angle = (robot -> angle + DEFAULT_ANGLE_CHANGE) % 360;
                 break;
         }
     }
-    robot->direction = 0;
-    x_offset = (-robot->currentSpeed * sin(-robot->angle*PI/180));
-    y_offset = (-robot->currentSpeed * cos(-robot->angle*PI/180));
 
-    robot->true_x += x_offset;
-    robot->true_y += y_offset;
+    robot -> direction = 0;
+    robot -> true_x += (-robot -> currentSpeed * sin(-robot -> angle * PI / 180));
+    robot -> true_y += (-robot -> currentSpeed * cos(-robot -> angle * PI / 180));
 
-    x_offset = round(robot->true_x);
-    y_offset = round(robot->true_y);
-
-    robot->x = (int) x_offset;
-    robot->y = (int) y_offset;
+    robot -> x = (int) round(robot -> true_x);
+    robot -> y = (int) round(robot -> true_y);
 }
 
 //TODO
