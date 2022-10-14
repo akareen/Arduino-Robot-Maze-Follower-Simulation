@@ -258,12 +258,13 @@ void resetToMaxSpeed(struct Robot * robot) {
 //Not positional
 //
 //FINISHED = made the method more readable and concise
-void robotMotorMove(struct Robot * robot, int crashed) {
+void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier double
     double x_offset, y_offset;
     if (crashed)
         robot -> currentSpeed = 0;
     else {
         switch(robot -> direction){
+            //Fix all of these to make it continuous not positional
             case UP :
                 robot -> currentSpeed += DEFAULT_SPEED_CHANGE;
                 resetToMaxSpeed(robot); break;
@@ -278,7 +279,6 @@ void robotMotorMove(struct Robot * robot, int crashed) {
                 break;
         }
     }
-
     robot -> direction = 0;
     robot -> true_x += (-robot -> currentSpeed * sin(-robot -> angle * PI / 180));
     robot -> true_y += (-robot -> currentSpeed * cos(-robot -> angle * PI / 180));
@@ -287,23 +287,22 @@ void robotMotorMove(struct Robot * robot, int crashed) {
     robot -> y = (int) round(robot -> true_y);
 }
 
-//TODO
+//This whole method needs to be updated to have a good algorithm
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_sensor, int right_sensor) {
-
     if (front_centre_sensor == 0) {
-        if (robot->currentSpeed<2)
+        if (robot->currentSpeed < 2)
             robot->direction = UP;
     }
-    else if ((robot->currentSpeed>0) && ((front_centre_sensor >= 1) && (left_sensor == 0) && (right_sensor == 0)) ) {
+    else if ((robot->currentSpeed > 0) && ((front_centre_sensor >= 1) && (left_sensor == 0) && (right_sensor == 0)) ) {
         robot->direction = DOWN;
     }
-    else if ((robot->currentSpeed==0) && ((front_centre_sensor >= 1) && (left_sensor == 0)) ) {
+    else if ((robot->currentSpeed == 0) && ((front_centre_sensor >= 1) && (left_sensor == 0)) ) {
         robot->direction = LEFT;
     }
-    else if ((robot->currentSpeed>0) && ((right_sensor >= 1)) ) {
+    else if ((robot->currentSpeed > 0) && ((right_sensor >= 1)) ) {
         robot->direction = LEFT;
     }
     else if ((robot->currentSpeed>0) && ((left_sensor >= 1)) ) {
-        robot->direction = RIGHT;
+        robot -> direction = RIGHT;
     }
 }
