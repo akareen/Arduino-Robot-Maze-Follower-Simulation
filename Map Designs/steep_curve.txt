@@ -1,0 +1,25 @@
+int i, a, b, c, d, e, f, g, h, k, l, m;
+double j;
+a = 300;
+b = 40;
+c = 10;
+d = 3;
+e = 90;
+f = 200;
+g = b;
+h = c;
+k = d;
+l = e;
+m = 500;
+int name_index = 0;
+for (i = 0; i < m; i++){
+    j = i;
+    insertAndSetFirstWall(&head, name_index++,
+                            a + b*sin(c*j * M_PI/180),
+                            (i * d)+e,
+                            10, 10);
+    insertAndSetFirstWall(&head, name_index++,
+                            f + g*sin(h*j * M_PI/180),
+                            (i * k)+l,
+                            10, 10);
+}

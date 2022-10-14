@@ -1,0 +1,11 @@
+//replace robot->true_x = 50; and robot->true_y = OVERALL_WINDOW_HEIGHT-50;
+
+insertAndSetFirstWall(&head, 1,  0, 0, 10, OVERALL_WINDOW_HEIGHT); 
+insertAndSetFirstWall(&head, 2,  100,  100, 10, OVERALL_WINDOW_HEIGHT-100); 
+insertAndSetFirstWall(&head, 3,  0, 0, OVERALL_WINDOW_WIDTH, 10); // top wall
+insertAndSetFirstWall(&head, 4,  200, 0, 10, OVERALL_WINDOW_HEIGHT-100);
+insertAndSetFirstWall(&head, 5,  100, OVERALL_WINDOW_HEIGHT-10, OVERALL_WINDOW_WIDTH, 10); 
+insertAndSetFirstWall(&head, 6,  300,  100, 10, OVERALL_WINDOW_HEIGHT-100);
+insertAndSetFirstWall(&head, 7,  400, 0, 10, OVERALL_WINDOW_HEIGHT-100);
+insertAndSetFirstWall(&head, 8,  500,  100, 10, OVERALL_WINDOW_HEIGHT-100);
+insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH - 10, 0, 10, OVERALL_WINDOW_HEIGHT-100);

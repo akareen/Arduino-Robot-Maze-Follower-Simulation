@@ -1,0 +1,21 @@
+float aa, bb;
+int name_index = 0;
+int a = 325;
+aa = 0.5;
+bb = 1;
+int c = 180;
+int d = 1;
+int e = a+100;
+int f = c;
+c += 50;
+int m = 200;
+for (int i = 0; i < m; i++){
+    if (i < 150) {
+        insertAndSetFirstWall(&head, name_index++,  a - i*aa , c + i*bb, 10, 10);
+    }
+    insertAndSetFirstWall(&head, name_index++,  e - i*aa , f + i*bb, 10, 10);
+}
+insertAndSetFirstWall(&head, name_index++, c-m*bb, a-150, 1000, 10);
+insertAndSetFirstWall(&head, name_index++, c-m*bb, a-100, 305, 10);
+insertAndSetFirstWall(&head, name_index++,  a - (m-50)*aa , c + (m-50)*bb, 10, 200);
+insertAndSetFirstWall(&head, name_index++,  e - m*aa , f + m*bb, 10, 200);

@@ -259,7 +259,6 @@ void resetToMaxSpeed(struct Robot * robot) {
 //
 //FINISHED = made the method more readable and concise
 void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier double
-    double x_offset, y_offset;
     if (crashed)
         robot -> currentSpeed = 0;
     else {
