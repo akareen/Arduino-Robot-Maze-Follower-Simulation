@@ -18,7 +18,7 @@ void setup_robot(struct Robot *robot){
 
 
 
-//Returns 1 if the robot is off the screen OTHERWISE Returns 1
+//Returns 1 if the robot is off the screen OTHERWISE Returns 0
 int robot_off_screen(struct Robot * robot){
     if ((robot -> x < 0 || robot -> y < 0) 
         || (robot -> x > OVERALL_WINDOW_WIDTH || robot -> y > OVERALL_WINDOW_HEIGHT))
@@ -285,6 +285,7 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
     robot -> x = (int) round(robot -> true_x);
     robot -> y = (int) round(robot -> true_y);
 }
+
 
 //This whole method needs to be updated to have a good algorithm
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_sensor, int right_sensor) {
