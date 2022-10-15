@@ -20,3 +20,4 @@ ELEC1601 Robot Project Simulation
     use 0.0 - 15.0 to make it smoother
 * Maximum sensor vision of 30 (pixels), 
     try and use gradient steps for accuracy
+* There will be 90 degree corners in the basic maze and curved corners in advanced
