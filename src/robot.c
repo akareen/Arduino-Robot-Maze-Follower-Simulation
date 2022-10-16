@@ -309,20 +309,16 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 //     }
 // }
 
-
-
 void updateList(int row) {
     ls[row][0] = 1;
     ls[row][1] = 90;
 }
-
 
 int slowDown(struct Robot * robot) {
     robot -> direction = DOWN;
     ls[2][1] -= 1;
     return 1;
 }
-
 
 int rotateClockwise(struct Robot * robot) {
     if (ls[2][1] > 0)
@@ -336,7 +332,6 @@ int rotateClockwise(struct Robot * robot) {
     return 1;
 }
 
-
 int rotateCounterClockwise(struct Robot * robot) {
     if (ls[2][1] > 0)
         return slowDown(robot);
@@ -349,16 +344,12 @@ int rotateCounterClockwise(struct Robot * robot) {
     return 1;
 }
 
-
-
-
 void moveForward(struct Robot * robot) {
     if (ls[2][1] < 3) {
         robot -> direction = UP;
         ls[2][1] += 1;
     }
 }
-
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_sensor, int right_sensor) {
     int stepDone = 0;
