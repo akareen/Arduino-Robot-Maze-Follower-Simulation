@@ -6,7 +6,8 @@
         "sdl2_gfxprimitives.h": "c",
         "sdl.h": "c",
         "structures.h": "c",
-        "formulas.h": "c"
+        "formulas.h": "c",
+        "robot.h": "c"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }
