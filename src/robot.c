@@ -306,3 +306,28 @@ void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_
         robot -> direction = RIGHT;
     }
 }
+
+int leftWallDetected() {
+    return 0;
+}
+
+int frontWallDetected() {
+    return 0;
+}
+
+void rotateClockwise() {
+
+}
+
+void rotateCounterClockwise() {
+
+}
+
+void moveForward() {
+
+}
+
+// Wall following image link: https://ibb.co/8g3pyRX
+
+
+
