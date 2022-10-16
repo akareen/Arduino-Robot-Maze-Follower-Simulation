@@ -1,5 +1,8 @@
 #include "robot.h"
 
+int ls [3][2] = {{0,0}, {0,0}, {0,0}}; 
+int firstHit = 0;
+
 void setup_robot(struct Robot *robot){
     robot -> x = OVERALL_WINDOW_WIDTH / 2 - 50;
     robot -> y = OVERALL_WINDOW_HEIGHT - 50;
@@ -12,7 +15,6 @@ void setup_robot(struct Robot *robot){
     robot -> currentSpeed = 0;
     robot -> crashed = 0;
     robot -> auto_mode = 0;
-
     printf("Press arrow keys to move manually, or enter to move automatically\n\n");
 }
 
@@ -288,45 +290,110 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 
 
 //This whole method needs to be updated to have a good algorithm
+// void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_sensor, int right_sensor) {
+//     if (front_centre_sensor == 0) {
+//         if (robot->currentSpeed < 2)
+//             robot->direction = UP;
+//     }
+//     else if ((robot->currentSpeed > 0) && ((front_centre_sensor >= 1) && (left_sensor == 0) && (right_sensor == 0)) ) {
+//         robot->direction = DOWN;
+//     }
+//     else if ((robot->currentSpeed == 0) && ((front_centre_sensor >= 1) && (left_sensor == 0)) ) {
+//         robot->direction = LEFT;
+//     }
+//     else if ((robot->currentSpeed > 0) && ((right_sensor >= 1)) ) {
+//         robot->direction = LEFT;
+//     }
+//     else if ((robot->currentSpeed>0) && ((left_sensor >= 1)) ) {
+//         robot -> direction = RIGHT;
+//     }
+// }
+
+
+
+void updateList(int row) {
+    ls[row][0] = 1;
+    ls[row][1] = 90;
+}
+
+
+int slowDown(struct Robot * robot) {
+    robot -> direction = DOWN;
+    ls[2][1] -= 1;
+    return 1;
+}
+
+
+int rotateClockwise(struct Robot * robot) {
+    if (ls[2][1] > 0)
+        return slowDown(robot);
+    robot -> direction = RIGHT;
+    ls[0][1] -= 15;
+    if (ls[0][1] <= 0) {
+        ls[0][0] = 0;
+        ls[2][0] = 1;
+    }
+    return 1;
+}
+
+
+int rotateCounterClockwise(struct Robot * robot) {
+    if (ls[2][1] > 0)
+        return slowDown(robot);
+    robot -> direction = LEFT;
+    ls[1][1] -= 15;
+    if (ls[1][1] <= 0) {
+        ls[1][0] = 0;
+        ls[2][0] = 1;
+    }
+    return 1;
+}
+
+
+
+
+void moveForward(struct Robot * robot) {
+    if (ls[2][1] < 3) {
+        robot -> direction = UP;
+        ls[2][1] += 1;
+    }
+}
+
+
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_sensor, int right_sensor) {
-    if (front_centre_sensor == 0) {
-        if (robot->currentSpeed < 2)
-            robot->direction = UP;
+    int stepDone = 0;
+    if (ls[0][0] == 1) // move clockwise
+        stepDone = rotateClockwise(robot);
+    if (ls[1][0] == 1 && !stepDone) // move counterClockwise
+        stepDone = rotateCounterClockwise(robot);
+
+    if (!stepDone) {
+        // if ((front_centre_sensor == 1 || front_centre_sensor == 2) &&
+        //         ls[2][1] >= 0) {
+        //     slowDown(robot);
+        // }
+        if (front_centre_sensor >= 3) {
+            firstHit = 1;
+            printf("HELLLLLP\n");
+            updateList(0);
+            rotateClockwise(robot);
+        }
+        else if (left_sensor < 2 && ls[2][0] > 0 && firstHit == 0) {
+            moveForward(robot);
+            printf("moving forward\n");
+        }
+            
+        else if (left_sensor < 2) { // rotate CCW and forward
+            printf("Here\n");
+            updateList(1);
+            rotateCounterClockwise(robot);
+        }
+        else {
+            printf("why here?\n");
+            moveForward(robot);
+        }
     }
-    else if ((robot->currentSpeed > 0) && ((front_centre_sensor >= 1) && (left_sensor == 0) && (right_sensor == 0)) ) {
-        robot->direction = DOWN;
-    }
-    else if ((robot->currentSpeed == 0) && ((front_centre_sensor >= 1) && (left_sensor == 0)) ) {
-        robot->direction = LEFT;
-    }
-    else if ((robot->currentSpeed > 0) && ((right_sensor >= 1)) ) {
-        robot->direction = LEFT;
-    }
-    else if ((robot->currentSpeed>0) && ((left_sensor >= 1)) ) {
-        robot -> direction = RIGHT;
-    }
 }
-
-int leftWallDetected() {
-    return 0;
-}
-
-int frontWallDetected() {
-    return 0;
-}
-
-void rotateClockwise() {
-
-}
-
-void rotateCounterClockwise() {
-
-}
-
-void moveForward() {
-
-}
-
 // Wall following image link: https://ibb.co/8g3pyRX
 
 
