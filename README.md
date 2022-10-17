@@ -13,6 +13,10 @@ ELEC1601 Robot Project Simulation
 * Improve the algorithm for the robot (various steps including curves)
 * Test on other mazes for the robot
 * Incorporate acceleration and momentum
+* Learn the maze the first time around to make it faster for subsequent runs. 
+This can be done by creating an integer array with a code for each movement the
+robot has made. When the robot is a few steps away from a turn it can decelerate.
+This will mean the robot can accelerate faster in a straight line and slow down for a turn.
 
 **Rules to be aware of:**
 * Maximum speed change of 1 (per timestep), 
