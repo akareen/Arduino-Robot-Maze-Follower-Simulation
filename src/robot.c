@@ -1,10 +1,13 @@
 #include "robot.h"
 
-int ls[3][2] = {
-    {0,0}, // [0]: In a clockwise turn, [1]: degrees left in turn
-    {0,0}, // [0]: In a counterClockwise turn, [1]: degrees left in turn
-    {0,0}  // [0]: Current speed of the robot
-}; 
+int inClockwiseTurn = 0;
+int degreesLeftClockwise = 0;
+
+int inCounterClockwiseTurn = 0;
+int degreesLeftCounterClockwise = 0;
+
+int speed = 0;
+
 int timeOutOfRightSensor = 0; // This is used to turn the robot once it has been
 // out of the right sensor for enough time to make a turn
 
@@ -313,72 +316,65 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 //     }
 // }
 
-//Starts a turn by updating the turn to true and making a 90 degree turn
-void updateList(int row) {
-    ls[row][0] = 1;
-    ls[row][1] = 90;
-}
-
 //Slows down the robot and updates the speed to reflect the slow down
 void slowDown(struct Robot * robot) {
     robot -> direction = DOWN;
-    ls[2][0] -= 1;
+    speed -= 1;
 }
 
 //Makes the robot accelerate if the speed is under 5
 void moveForward(struct Robot * robot) {
-    if (ls[2][0] < 6) {
+    if (speed < 6) {
         robot -> direction = UP;
-        ls[2][0] += 1;
+        speed += 1;
     }
 }
 
 //Rotates the clockwise until the turn is complete
 void rotateClockwise(struct Robot * robot) {
     robot -> direction = RIGHT;
-    ls[0][1] -= 15;
-    if (ls[0][1] <= 0)
-        ls[0][0] = 0;
+    degreesLeftClockwise -= 15;
+    if (degreesLeftClockwise <= 0)
+        inClockwiseTurn = 0;
 }
 
 
 //Rotates the counter clockwise until the turn is complete
 void rotateCounterClockwise(struct Robot * robot) {
     robot -> direction = LEFT;
-    ls[1][1] -= 15;
-    if (ls[1][1] <= 0)
-        ls[1][0] = 0;
+    degreesLeftCounterClockwise -= 15;
+    if (degreesLeftCounterClockwise <= 0)
+        inCounterClockwiseTurn = 0;
 }
 
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
-    if (ls[0][0] == 1) { // If turning clockwise continue to do so
+    if (inClockwiseTurn == 1) // If turning clockwise continue to do so
         rotateClockwise(robot);
-        return;
-    }
-    if (ls[1][0] == 1) { // If turning counterClockwise continue to do so
+    else if (inCounterClockwiseTurn == 1) // If turning counterClockwise continue to do so
         rotateCounterClockwise(robot);
-        return;
-    }
-
-    if (front_centre_sensor >= 1) { // There is a wall ahead
-        updateList(1);
-        rotateCounterClockwise(robot);
-    }
-    else if (right_sensor < 2 && timeOutOfRightSensor > 2) { // Corner right
-        updateList(0);
-        rotateClockwise(robot);
-        timeOutOfRightSensor = 0;
-    }
-    else if (right_sensor >= 1) { // Moving along a right wall
-        timeOutOfRightSensor = 1;
-        moveForward(robot);
-    }
-    else { // No right wall on the side, prepare for next turn
-        if (timeOutOfRightSensor >= 1)
-            timeOutOfRightSensor += 1;
-        moveForward(robot);
+    else {
+        if (front_centre_sensor >= 1) { // There is a wall ahead
+            inCounterClockwiseTurn = 1;
+            degreesLeftCounterClockwise = 90;
+            rotateCounterClockwise(robot);
+        }
+        else if (right_sensor < 2 && timeOutOfRightSensor > 2) { // Corner right
+            inClockwiseTurn = 1;
+            degreesLeftClockwise = 90;
+            timeOutOfRightSensor = 0;
+            rotateClockwise(robot);
+        }
+        else if (right_sensor >= 1) { // Moving along a right wall
+            timeOutOfRightSensor = 1;
+            moveForward(robot);
+        }
+        else { // No right wall on the side, prepare for next turn
+            if (timeOutOfRightSensor >= 1)
+                timeOutOfRightSensor += 1;
+            moveForward(robot);
+        }
     }
 }
 
