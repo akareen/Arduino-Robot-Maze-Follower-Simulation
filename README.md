@@ -5,10 +5,11 @@ ELEC1601 Robot Project Simulation
 * Reduced code length
 * Added comments to clarify functionality
 * Basic Wall following algorithm complete
-* Basic maze finished in 23.7 seconds
+* Basic maze finished in 29.4 seconds
 
 
 **List of things to do:**
+* Accelerate / Brake at the same time as turning
 * Improve GUI of the simulation
 * Improve the algorithm for the robot (various steps including curves)
 * Test on other mazes for the robot
