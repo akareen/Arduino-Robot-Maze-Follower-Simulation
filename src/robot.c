@@ -323,8 +323,8 @@ void slowDown(struct Robot * robot) {
 }
 
 //Makes the robot accelerate if the speed is under 5
-void moveForward(struct Robot * robot) {
-    if (speed < 6) {
+void moveForward(struct Robot * robot, int modifier) {
+    if (speed < (6 + modifier)) {
         robot -> direction = UP;
         speed += 1;
     }
@@ -360,7 +360,7 @@ int left_sensor, int right_sensor) {
             degreesLeftCounterClockwise = 90;
             rotateCounterClockwise(robot);
         }
-        else if (right_sensor < 2 && timeOutOfRightSensor > 2) { // Corner right
+        else if (right_sensor < 2 && timeOutOfRightSensor > 1) { // Corner right
             inClockwiseTurn = 1;
             degreesLeftClockwise = 90;
             timeOutOfRightSensor = 0;
@@ -368,12 +368,12 @@ int left_sensor, int right_sensor) {
         }
         else if (right_sensor >= 1) { // Moving along a right wall
             timeOutOfRightSensor = 1;
-            moveForward(robot);
+            moveForward(robot, 1);
         }
         else { // No right wall on the side, prepare for next turn
             if (timeOutOfRightSensor >= 1)
                 timeOutOfRightSensor += 1;
-            moveForward(robot);
+            moveForward(robot, -2);
         }
     }
 }
