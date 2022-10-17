@@ -1,0 +1,39 @@
+int name_index = 1;
+//Straight walls
+insertAndSetFirstWall(&head, name_index++,  50, OVERALL_WINDOW_HEIGHT/2, 10, OVERALL_WINDOW_HEIGHT/2);
+insertAndSetFirstWall(&head, name_index++,  150, OVERALL_WINDOW_HEIGHT/2 + 50, 10, OVERALL_WINDOW_HEIGHT/2);
+insertAndSetFirstWall(&head, name_index++,  OVERALL_WINDOW_WIDTH - 150, OVERALL_WINDOW_HEIGHT/2 + 50, 10, OVERALL_WINDOW_HEIGHT/2);
+insertAndSetFirstWall(&head, name_index++,  OVERALL_WINDOW_WIDTH - 50, OVERALL_WINDOW_HEIGHT/2, 10, OVERALL_WINDOW_HEIGHT/2);
+insertAndSetFirstWall(&head, name_index++,  OVERALL_WINDOW_HEIGHT/2, 50, OVERALL_WINDOW_WIDTH-OVERALL_WINDOW_HEIGHT, 10);
+insertAndSetFirstWall(&head, name_index++,  OVERALL_WINDOW_HEIGHT/2 + 50, 150, OVERALL_WINDOW_WIDTH-OVERALL_WINDOW_HEIGHT - 100, 10);
+//Diagonal walls
+int sh1 = OVERALL_WINDOW_HEIGHT/2;
+int sh2 = sh1 + 50;
+int sw1 = 50;
+int sw2 = 150;
+int l1 = OVERALL_WINDOW_HEIGHT/2 - 50;
+int l2 = l1 - 50;
+for (int i = 0; i < l1; i++) {
+	insertAndSetFirstWall(&head, name_index++, sw1 + i, sh1 - i, 10, 10);
+	if (i < l2)
+		insertAndSetFirstWall(&head, name_index++, sw2 + i, sh2 - i, 10, 10);
+}
+//Curved walls
+int cx1 = OVERALL_WINDOW_WIDTH - OVERALL_WINDOW_HEIGHT/2;
+int cy1 = OVERALL_WINDOW_HEIGHT/2;
+int cx2 = cx1 - 50;
+int cy2 = cy1 + 50;
+for (float i = 0; i < PI/2; i+=0.04) {
+	insertAndSetFirstWall(&head, name_index++, cx1 + l1 * sin(i), cy1 - l1 * cos(i), 10, 10);
+	insertAndSetFirstWall(&head, name_index++, cx2 + l2 * sin(i), cy2 - l2 * cos(i), 10, 10);
+}
+
+//GOAL POSITION
+//x = OVERALL_WINDOW_WIDTH - 150;
+//y = OVERALL_WINDOW_HEIGHT;
+//width = 100;
+//height = 10;
+
+//ROBOT POSITION
+//x = 100;
+//y = OVERALL_WINDOW_HEIGHT-50;

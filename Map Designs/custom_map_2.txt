@@ -1,0 +1,14 @@
+insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/1.50-100, 275, 10, OVERALL_WINDOW_HEIGHT);
+insertAndSetFirstWall(&head, 2,  OVERALL_WINDOW_WIDTH/1.25-100, 350, 10, OVERALL_WINDOW_HEIGHT);
+insertAndSetFirstWall(&head, 4,  OVERALL_WINDOW_WIDTH/2.25-100, 200, 10, OVERALL_WINDOW_HEIGHT);
+insertAndSetFirstWall(&head, 5, 415, 350, 150, 10);
+insertAndSetFirstWall(&head, 6, 260, 275, 220, 10);
+insertAndSetFirstWall(&head, 7, 560, 60, 10, 300);
+insertAndSetFirstWall(&head, 8, 50, 60, 10, 300);
+insertAndSetFirstWall(&head, 9, 560, 60, 10, 300);
+insertAndSetFirstWall(&head, 10, 475, 135, 10, 150);
+insertAndSetFirstWall(&head, 11, 50, 60, 520, 10);
+insertAndSetFirstWall(&head, 11, 125, 135, 350, 10);
+insertAndSetFirstWall(&head, 10, 125, 135, 10, 150);
+insertAndSetFirstWall(&head, 5, 60, 350, 125, 10);
+insertAndSetFirstWall(&head, 5, 185, 200, 200, 10);

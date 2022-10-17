@@ -1,0 +1,163 @@
+//1.st
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2, OVERALL_WINDOW_HEIGHT/3+200, 10, OVERALL_WINDOW_HEIGHT/2);
+    insertAndSetFirstWall(&head, 2,  OVERALL_WINDOW_WIDTH/2-220, OVERALL_WINDOW_HEIGHT/3+200, 220, 10);
+    insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-310, OVERALL_WINDOW_HEIGHT/3+310, 700, 10);
+    insertAndSetFirstWall(&head, 4,  OVERALL_WINDOW_WIDTH/2-315, OVERALL_WINDOW_HEIGHT/3-170, 10, OVERALL_WINDOW_HEIGHT/2+250);
+    insertAndSetFirstWall(&head, 5,  OVERALL_WINDOW_WIDTH/2, OVERALL_WINDOW_HEIGHT/3+200, 10, OVERALL_WINDOW_HEIGHT/2);
+    insertAndSetFirstWall(&head, 6,  OVERALL_WINDOW_WIDTH/2-220, OVERALL_WINDOW_HEIGHT/3-170, 10, OVERALL_WINDOW_HEIGHT/2+40);
+    insertAndSetFirstWall(&head, 7,  OVERALL_WINDOW_WIDTH/2-350, OVERALL_WINDOW_HEIGHT/3-160, 700, 10);
+    insertAndSetFirstWall(&head, 8,  OVERALL_WINDOW_WIDTH/2-220, OVERALL_WINDOW_HEIGHT/3+110, 230, 10);
+    insertAndSetFirstWall(&head, 9,  OVERALL_WINDOW_WIDTH/2, OVERALL_WINDOW_HEIGHT/3-170, 10, OVERALL_WINDOW_HEIGHT/2+40);
+    insertAndSetFirstWall(&head, 10,  OVERALL_WINDOW_WIDTH/2+90, OVERALL_WINDOW_HEIGHT/3-60, 10, OVERALL_WINDOW_HEIGHT/2+60);
+    insertAndSetFirstWall(&head, 11,  OVERALL_WINDOW_WIDTH/2+90, OVERALL_WINDOW_HEIGHT/3-70, 300, 10);
+    insertAndSetFirstWall(&head, 11,  OVERALL_WINDOW_WIDTH/2+90, OVERALL_WINDOW_HEIGHT/3+230, 300, 10);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2, OVERALL_WINDOW_HEIGHT/2, 10, OVERALL_WINDOW_HEIGHT/2-200);
+
+    //2nd
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2, OVERALL_WINDOW_HEIGHT/3+100, 10, OVERALL_WINDOW_HEIGHT/2);
+    insertAndSetFirstWall(&head, 2,  OVERALL_WINDOW_WIDTH/2-220, OVERALL_WINDOW_HEIGHT/3+200, 120, 10);
+    insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-310, OVERALL_WINDOW_HEIGHT/3+310, 700, 10);
+    insertAndSetFirstWall(&head, 4,  OVERALL_WINDOW_WIDTH/2-320, OVERALL_WINDOW_HEIGHT/3-150, 10, OVERALL_WINDOW_HEIGHT/2+700);
+    insertAndSetFirstWall(&head, 5,  OVERALL_WINDOW_WIDTH/2-350, OVERALL_WINDOW_HEIGHT/3-160, 700, 10);
+    insertAndSetFirstWall(&head, 6,  OVERALL_WINDOW_WIDTH/2-130, OVERALL_WINDOW_HEIGHT/3+100, 220, 10);
+    insertAndSetFirstWall(&head, 7,  OVERALL_WINDOW_WIDTH/2-420, OVERALL_WINDOW_HEIGHT/3+100, 220, 10);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2-200, OVERALL_WINDOW_HEIGHT/3-200, 10, OVERALL_WINDOW_HEIGHT/2-20);
+    insertAndSetFirstWall(&head, 7,  OVERALL_WINDOW_WIDTH/2-200, OVERALL_WINDOW_HEIGHT/3+20, 290, 10);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2+200, OVERALL_WINDOW_HEIGHT/2-170, 10, OVERALL_WINDOW_HEIGHT/2+80);
+
+//3rd
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2, OVERALL_WINDOW_HEIGHT/3+80, 10, OVERALL_WINDOW_HEIGHT/2+80);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2-105, OVERALL_WINDOW_HEIGHT/3+150, 10, OVERALL_WINDOW_HEIGHT/2);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2-210, OVERALL_WINDOW_HEIGHT/3+150, 10, OVERALL_WINDOW_HEIGHT/2+700);
+    insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-310, OVERALL_WINDOW_HEIGHT/3+310, 700, 10);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2-320, OVERALL_WINDOW_HEIGHT/3-150, 10, OVERALL_WINDOW_HEIGHT/2+700);
+    insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-240, OVERALL_WINDOW_HEIGHT/3+70, 250, 10);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2-240, OVERALL_WINDOW_HEIGHT/3-90, 10, OVERALL_WINDOW_HEIGHT/2-80);
+    insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-320, OVERALL_WINDOW_HEIGHT/3-160, 700, 10);
+    insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-150, OVERALL_WINDOW_HEIGHT/3-20, 250, 10);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2-150, OVERALL_WINDOW_HEIGHT/3-180, 10, OVERALL_WINDOW_HEIGHT/2-70);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2+90, OVERALL_WINDOW_HEIGHT/3-10, 10, OVERALL_WINDOW_HEIGHT/2+10);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2+190, OVERALL_WINDOW_HEIGHT/3-210, 10, OVERALL_WINDOW_HEIGHT/2+210);
+
+//Weirdo1st
+    int i, a, b, c, d, e, f, g, h, k, l, m;
+        double j;
+        a = 300;
+        b = 30;
+        c = 10;
+        d = 3;
+        e = 100;
+        f = 200;
+        g = b;
+        h = c;
+        k = d;
+        l = e;
+        m = 50;
+        int name_index=1;
+            insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-310, OVERALL_WINDOW_HEIGHT/3+310, 700, 10);
+            insertAndSetFirstWall(&head, 4,  OVERALL_WINDOW_WIDTH/2-270, OVERALL_WINDOW_HEIGHT/3-50, 10, OVERALL_WINDOW_HEIGHT/2-80);
+            insertAndSetFirstWall(&head, 4,  OVERALL_WINDOW_WIDTH/2-170, OVERALL_WINDOW_HEIGHT/3-10, 10, OVERALL_WINDOW_HEIGHT/2-120);
+            insertAndSetFirstWall(&head, 4,  OVERALL_WINDOW_WIDTH/2-90, OVERALL_WINDOW_HEIGHT/3-40, 10, OVERALL_WINDOW_HEIGHT/2-90);
+            insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-170, OVERALL_WINDOW_HEIGHT/3+100, 80, 10);
+            insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-190, OVERALL_WINDOW_HEIGHT/3-130, 260, 10);
+            insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2+190, OVERALL_WINDOW_HEIGHT/3+220, 160, 10);
+            insertAndSetFirstWall(&head, 4,  OVERALL_WINDOW_WIDTH/2+96, OVERALL_WINDOW_HEIGHT/3+200, 10, OVERALL_WINDOW_HEIGHT/2-120);
+
+
+
+        for (i = 0; i < m; i++){
+            j = i;
+            insertAndSetFirstWall(&head, name_index++, a + b*sin(c*j * M_PI/270)+230,(i * 4)+e +80,10, 10);
+            insertAndSetFirstWall(&head, name_index++, a + b*sin(c*j * M_PI/270)+130,(i * 4)+e +60,10, 10);
+
+            //insertAndSetFirstWall(&head, name_index++, f + g*sin(h*j * M_PI/180),(i * k)+l,10, 10);
+        }
+
+        float aa, bb;
+        a = 500;
+        aa = 0.5;
+        bb = 1;
+        c = 50;
+        d = 1;
+        e = a+100;
+        f = c;
+        m = 200;
+        for (i = 0; i < m; i++){
+
+            insertAndSetFirstWall(&head, name_index++,  i*1 + 50, c + i*bb+220, 10, 8);
+            insertAndSetFirstWall(&head, name_index++,  i*1 +150, c + i*bb+220, 10, 8);
+
+        }
+        for (i = 0; i < 80; i++){
+            insertAndSetFirstWall(&head, name_index++,  -i*1 +130, c + i*bb-20, 10, 8);
+        }
+        for (i = 0; i < 40; i++){
+            insertAndSetFirstWall(&head, name_index++,  i*5 + 230, c + i*bb+70, 10, 8);
+        }
+        for (i = 0; i < 150; i++){
+            insertAndSetFirstWall(&head, name_index++,  i*1.0 + 380, c + i*bb-20, 10, 8);
+        }
+
+//Weirdo 2nd    
+int i, a, b, c, d, e, f, g, h, k, l, m;
+        double j;
+        a = 300;
+        b = 30;
+        c = 10;
+        d = 3;
+        e = 100;
+        f = 200;
+        g = b;
+        h = c;
+        k = d;
+        l = e;
+        m = 50;
+        int name_index=1;
+
+        insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-310, OVERALL_WINDOW_HEIGHT/3+310, 700, 10);
+        insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-270, OVERALL_WINDOW_HEIGHT/3+100, 210, 10);
+        insertAndSetFirstWall(&head, 4,  OVERALL_WINDOW_WIDTH/2-270, OVERALL_WINDOW_HEIGHT/3+20, 10, OVERALL_WINDOW_HEIGHT/2-160);
+        insertAndSetFirstWall(&head, 4,  OVERALL_WINDOW_WIDTH/2+217, OVERALL_WINDOW_HEIGHT/3-160, 10, OVERALL_WINDOW_HEIGHT/2-110);
+        insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-270, OVERALL_WINDOW_HEIGHT/3+20, 200, 10);
+        for (i = 0; i < m; i++){
+            j = i;
+            insertAndSetFirstWall(&head, name_index++, a - (b+30)*sin(c*j * M_PI/450)-50,(i * 4)+e +170,10, 10);
+            insertAndSetFirstWall(&head, name_index++, a - (b+30)*sin(c*j * M_PI/450)+50,(i * 4)+e +170,10, 10);
+            insertAndSetFirstWall(&head, name_index++, (i * 3)+e +140 ,a - (b+30)*sin(c*j * M_PI/520)-130,10, 10);
+            //insertAndSetFirstWall(&head, name_index++, f + g*sin(h*j * M_PI/180),(i * k)+l,10, 10);
+        }
+
+        float aa, bb;
+        a = 500;
+        aa = 0.5;
+        bb = 1;
+        c = 50;
+        d = 1;
+        e = a+100;
+        f = c;
+        m = 200;
+        for (i = 0; i < 230; i++){
+            insertAndSetFirstWall(&head, name_index++,  i*1.0 + 340, c + i*bb+200, 10, 8);
+        }
+        for (i = 0; i < 300; i++){
+            insertAndSetFirstWall(&head, name_index++,  i*1.0 + 440, c + i*bb+160, 10, 8);
+        }
+        for (i = 0; i < 100; i++){
+            insertAndSetFirstWall(&head, name_index++,  i*1.0 + 440, c - i*bb+160, 10, 8);
+        }
+        for (i = 0; i < 150; i++){
+            insertAndSetFirstWall(&head, name_index++,  i*1.0 + 380, c - i*bb+100, 10, 8);
+        }
+
+//4th
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2, OVERALL_WINDOW_HEIGHT/3+80, 10, OVERALL_WINDOW_HEIGHT/2+80);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2-80, OVERALL_WINDOW_HEIGHT/3+80, 10, OVERALL_WINDOW_HEIGHT/2-80);
+    insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-310, OVERALL_WINDOW_HEIGHT/3+310, 700, 10);
+    insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-240, OVERALL_WINDOW_HEIGHT/3+70, 250, 10);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2-160, OVERALL_WINDOW_HEIGHT/3+150, 10, OVERALL_WINDOW_HEIGHT/2-80);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2-240, OVERALL_WINDOW_HEIGHT/3+80, 10, OVERALL_WINDOW_HEIGHT/2-80);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2-320, OVERALL_WINDOW_HEIGHT/3-180, 10, OVERALL_WINDOW_HEIGHT/2+280);
+    insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2-310, OVERALL_WINDOW_HEIGHT/3, 700, 10);
+    insertAndSetFirstWall(&head, 1,  OVERALL_WINDOW_WIDTH/2+100, OVERALL_WINDOW_HEIGHT/3, 10, OVERALL_WINDOW_HEIGHT/2);
+    insertAndSetFirstWall(&head, 3,  OVERALL_WINDOW_WIDTH/2+110, OVERALL_WINDOW_HEIGHT/3+230, 250, 10);
+

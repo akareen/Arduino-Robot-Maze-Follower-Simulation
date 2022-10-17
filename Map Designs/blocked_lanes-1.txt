@@ -1,0 +1,54 @@
+int i, a, b, c, d, e, f, g, h, k, l, m,bb;
+    double j, aa;
+    a = 40;
+    aa = 0.5;
+    bb = 1;
+    b = 30;
+    c = 6;
+    d = 3;
+    e = 90;
+    f = 140;
+    g = b;
+    h = c;
+    k = d;
+    l = e;
+    m = 500;
+    int name_index = 0;
+
+    for (i = 0; i < 500; i++ ) {
+        j = i;
+        insertAndSetFirstWall(&head, name_index++,a + b*sin(c*j * M_PI/180),(i * d)+e,8, 8);
+        insertAndSetFirstWall(&head, name_index++,f + g*sin(h*j * M_PI/180),(i * k)+l,8, 8);
+    }
+
+    insertAndSetFirstWall(&head, 1, 40, 20, 8, 80);
+    insertAndSetFirstWall(&head, 1, 40, 20, 550, 8);
+    insertAndSetFirstWall(&head, 1, 590, 20, 8, 450);
+    insertAndSetFirstWall(&head, 1, 280, 460, 310, 8);
+    insertAndSetFirstWall(&head, 1, 150, 460, 60, 8);
+    insertAndSetFirstWall(&head, 1, 215, 90, 80, 8);
+    insertAndSetFirstWall(&head, 1, 120, 380, 95, 8);
+    insertAndSetFirstWall(&head, 2, 375, 90, 145, 8);
+    insertAndSetFirstWall(&head, 2, 520, 90, 8, 145);
+    insertAndSetFirstWall(&head, 2, 445, 400, 75, 8);
+    insertAndSetFirstWall(&head, 2, 515, 335, 8, 75);
+
+
+    for (j = 0; j < 135; j++) {
+        insertAndSetFirstWall(&head, 1, 145+j, 90+j, 8, 8);
+        insertAndSetFirstWall(&head, 2, 280-j, 225+j, 8, 8);
+    }
+
+    for (j=0; j < 145; j++) {
+        insertAndSetFirstWall(&head, 1, 215+j, 90+j, 8, 8);
+        insertAndSetFirstWall(&head, 2, 355-j, 235+j, 8, 8);
+        insertAndSetFirstWall(&head, 1, 295+j, 90+j, 8, 8);
+        insertAndSetFirstWall(&head, 2, 445-j, 235+j, 8, 8);
+        insertAndSetFirstWall(&head, 1, 375+j, 90+j, 8, 8);
+    }
+
+    for (j=0; j<65;j++) {
+        insertAndSetFirstWall(&head, 2, 520+j, 90-j, 8, 8);
+        insertAndSetFirstWall(&head, 2, 445+j, 400-j, 8, 8);
+        insertAndSetFirstWall(&head, 2, 520+j, 400+j, 8, 8);
+    }
