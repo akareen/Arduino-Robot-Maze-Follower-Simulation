@@ -10,7 +10,7 @@ ELEC1601 Robot Project Simulation
 
 **List of things to do:**
 * Improve GUI of the simulation
-* Improve the algorithm for the robot (various including curves)
+* Improve the algorithm for the robot (various steps including curves)
 * Test on other mazes for the robot
 * Incorporate acceleration and momentum
 
