@@ -1,8 +1,7 @@
 #include "robot.h"
 
-int ls [3][2] = {{0,0}, {0,0}, {0,0}}; 
-int firstHit = 0;
-int timeSinceLeft = 0;
+int ls[3][2] = {{0,0}, {0,0}, {0,0}}; 
+int timeOutOfRightSensor = 0;
 
 void setup_robot(struct Robot *robot){
     robot -> x = OVERALL_WINDOW_WIDTH / 2 - 50;
@@ -321,6 +320,13 @@ int slowDown(struct Robot * robot) {
     return 1;
 }
 
+void moveForward(struct Robot * robot) {
+    if (ls[2][1] < 4) {
+        robot -> direction = UP;
+        ls[2][1] += 1;
+    }
+}
+
 int rotateClockwise(struct Robot * robot) {
     if (ls[2][1] > 0)
         return slowDown(robot);
@@ -345,12 +351,7 @@ int rotateCounterClockwise(struct Robot * robot) {
     return 1;
 }
 
-void moveForward(struct Robot * robot) {
-    if (ls[2][1] < 4) {
-        robot -> direction = UP;
-        ls[2][1] += 1;
-    }
-}
+
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_sensor, int right_sensor) {
     if (ls[0][0] == 1) { // move clockwise
@@ -362,27 +363,22 @@ void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_
         return;
     }
 
-    if (front_centre_sensor >= 2) {
-        firstHit = 1;
-        printf("HELLLLLP\n");
+    if (front_centre_sensor >= 2) { // wall ahead
+        updateList(1);
+        rotateCounterClockwise(robot);
+    }
+    else if (right_sensor < 2 && timeOutOfRightSensor > 5) { //corner right
         updateList(0);
         rotateClockwise(robot);
+        timeOutOfRightSensor = 1;
     }
-    else if (left_sensor < 2 && ls[2][0] > 0 && firstHit == 0) {
+    else if (right_sensor >= 1) {
+        timeOutOfRightSensor = 1;
         moveForward(robot);
-        printf("moving forward\n");
-    }
-    else if (left_sensor < 2) { // rotate CCW and forward
-        timeSinceLeft += 1;
-        if (timeSinceLeft > 3) {
-            printf("Here\n");
-            updateList(1);
-            rotateCounterClockwise(robot);
-            timeSinceLeft = 0;
-        }
     }
     else {
-        printf("why here?\n");
+        if (timeOutOfRightSensor >= 1)
+            timeOutOfRightSensor += 1;
         moveForward(robot);
     }
 }
