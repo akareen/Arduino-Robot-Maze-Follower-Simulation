@@ -2,6 +2,7 @@
 
 int ls [3][2] = {{0,0}, {0,0}, {0,0}}; 
 int firstHit = 0;
+int timeSinceLeft = 0;
 
 void setup_robot(struct Robot *robot){
     robot -> x = OVERALL_WINDOW_WIDTH / 2 - 50;
@@ -345,44 +346,44 @@ int rotateCounterClockwise(struct Robot * robot) {
 }
 
 void moveForward(struct Robot * robot) {
-    if (ls[2][1] < 3) {
+    if (ls[2][1] < 4) {
         robot -> direction = UP;
         ls[2][1] += 1;
     }
 }
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_sensor, int right_sensor) {
-    int stepDone = 0;
-    if (ls[0][0] == 1) // move clockwise
-        stepDone = rotateClockwise(robot);
-    if (ls[1][0] == 1 && !stepDone) // move counterClockwise
-        stepDone = rotateCounterClockwise(robot);
+    if (ls[0][0] == 1) { // move clockwise
+        rotateClockwise(robot);
+        return;
+    }
+    if (ls[1][0] == 1) { // move counterClockwise
+        rotateCounterClockwise(robot);
+        return;
+    }
 
-    if (!stepDone) {
-        // if ((front_centre_sensor == 1 || front_centre_sensor == 2) &&
-        //         ls[2][1] >= 0) {
-        //     slowDown(robot);
-        // }
-        if (front_centre_sensor >= 3) {
-            firstHit = 1;
-            printf("HELLLLLP\n");
-            updateList(0);
-            rotateClockwise(robot);
-        }
-        else if (left_sensor < 2 && ls[2][0] > 0 && firstHit == 0) {
-            moveForward(robot);
-            printf("moving forward\n");
-        }
-            
-        else if (left_sensor < 2) { // rotate CCW and forward
+    if (front_centre_sensor >= 2) {
+        firstHit = 1;
+        printf("HELLLLLP\n");
+        updateList(0);
+        rotateClockwise(robot);
+    }
+    else if (left_sensor < 2 && ls[2][0] > 0 && firstHit == 0) {
+        moveForward(robot);
+        printf("moving forward\n");
+    }
+    else if (left_sensor < 2) { // rotate CCW and forward
+        timeSinceLeft += 1;
+        if (timeSinceLeft > 3) {
             printf("Here\n");
             updateList(1);
             rotateCounterClockwise(robot);
+            timeSinceLeft = 0;
         }
-        else {
-            printf("why here?\n");
-            moveForward(robot);
-        }
+    }
+    else {
+        printf("why here?\n");
+        moveForward(robot);
     }
 }
 // Wall following image link: https://ibb.co/8g3pyRX
