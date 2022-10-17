@@ -1,7 +1,12 @@
 #include "robot.h"
 
-int ls[3][2] = {{0,0}, {0,0}, {0,0}}; 
-int timeOutOfRightSensor = 0;
+int ls[3][2] = {
+    {0,0}, // [0]: In a clockwise turn, [1]: degrees left in turn
+    {0,0}, // [0]: In a counterClockwise turn, [1]: degrees left in turn
+    {0,0}  // [0]: Current speed of the robot
+}; 
+int timeOutOfRightSensor = 0; // This is used to turn the robot once it has been
+// out of the right sensor for enough time to make a turn
 
 void setup_robot(struct Robot *robot){
     robot -> x = OVERALL_WINDOW_WIDTH / 2 - 50;
@@ -289,7 +294,6 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 }
 
 
-//This whole method needs to be updated to have a good algorithm
 // void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_sensor, int right_sensor) {
 //     if (front_centre_sensor == 0) {
 //         if (robot->currentSpeed < 2)
@@ -309,80 +313,82 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 //     }
 // }
 
+//Starts a turn by updating the turn to true and making a 90 degree turn
 void updateList(int row) {
     ls[row][0] = 1;
     ls[row][1] = 90;
 }
 
-int slowDown(struct Robot * robot) {
+//Slows down the robot and updates the speed to reflect the slow down
+void slowDown(struct Robot * robot) {
     robot -> direction = DOWN;
-    ls[2][1] -= 1;
-    return 1;
+    ls[2][0] -= 1;
 }
 
+//Makes the robot accelerate if the speed is under 4
 void moveForward(struct Robot * robot) {
-    if (ls[2][1] < 4) {
+    if (ls[2][0] < 4) {
         robot -> direction = UP;
-        ls[2][1] += 1;
+        ls[2][0] += 1;
     }
 }
 
-int rotateClockwise(struct Robot * robot) {
-    if (ls[2][1] > 0)
-        return slowDown(robot);
+//Rotates the robot clockwise, if the robot is moving ls[2][0] makes it stop to turn
+//The function will continue until the turn is complete
+void rotateClockwise(struct Robot * robot) {
+    if (ls[2][0] > 0) {
+        slowDown(robot);
+        return;
+    }
     robot -> direction = RIGHT;
     ls[0][1] -= 15;
-    if (ls[0][1] <= 0) {
+    if (ls[0][1] <= 0)
         ls[0][0] = 0;
-        ls[2][0] = 1;
-    }
-    return 1;
 }
 
-int rotateCounterClockwise(struct Robot * robot) {
-    if (ls[2][1] > 0)
-        return slowDown(robot);
+//Rotates the robot counter clockwise, if the robot is moving ls[2][0] makes it stop to turn
+//The function will continue until the turn is complete
+void rotateCounterClockwise(struct Robot * robot) {
+    if (ls[2][0] > 0) {
+        slowDown(robot);
+        return;
+    }
     robot -> direction = LEFT;
     ls[1][1] -= 15;
-    if (ls[1][1] <= 0) {
+    if (ls[1][1] <= 0)
         ls[1][0] = 0;
-        ls[2][0] = 1;
-    }
-    return 1;
 }
-
 
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_sensor, int right_sensor) {
-    if (ls[0][0] == 1) { // move clockwise
+    if (ls[0][0] == 1) { // If turning clockwise continue to do so
         rotateClockwise(robot);
         return;
     }
-    if (ls[1][0] == 1) { // move counterClockwise
+    if (ls[1][0] == 1) { // If turning counterClockwise continue to do so
         rotateCounterClockwise(robot);
         return;
     }
 
-    if (front_centre_sensor >= 2) { // wall ahead
+    if (front_centre_sensor >= 2) { // There is a wall ahead
         updateList(1);
         rotateCounterClockwise(robot);
     }
-    else if (right_sensor < 2 && timeOutOfRightSensor > 5) { //corner right
+    else if (right_sensor < 2 && timeOutOfRightSensor > 5) { // Corner right
         updateList(0);
         rotateClockwise(robot);
         timeOutOfRightSensor = 1;
     }
-    else if (right_sensor >= 1) {
+    else if (right_sensor >= 1) { // Moving along a right wall
         timeOutOfRightSensor = 1;
         moveForward(robot);
     }
-    else {
+    else { // No right wall on the side, prepare for next turn
         if (timeOutOfRightSensor >= 1)
             timeOutOfRightSensor += 1;
         moveForward(robot);
     }
 }
-// Wall following image link: https://ibb.co/8g3pyRX
 
 
 
