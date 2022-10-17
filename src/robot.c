@@ -336,10 +336,6 @@ void moveForward(struct Robot * robot) {
 //Rotates the robot clockwise, if the robot is moving ls[2][0] makes it stop to turn
 //The function will continue until the turn is complete
 void rotateClockwise(struct Robot * robot) {
-    if (ls[2][0] > 0) {
-        slowDown(robot);
-        return;
-    }
     robot -> direction = RIGHT;
     ls[0][1] -= 15;
     if (ls[0][1] <= 0)
@@ -349,10 +345,6 @@ void rotateClockwise(struct Robot * robot) {
 //Rotates the robot counter clockwise, if the robot is moving ls[2][0] makes it stop to turn
 //The function will continue until the turn is complete
 void rotateCounterClockwise(struct Robot * robot) {
-    if (ls[2][0] > 0) {
-        slowDown(robot);
-        return;
-    }
     robot -> direction = LEFT;
     ls[1][1] -= 15;
     if (ls[1][1] <= 0)
@@ -370,11 +362,11 @@ void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_
         return;
     }
 
-    if (front_centre_sensor >= 2) { // There is a wall ahead
+    if (front_centre_sensor >= 1) { // There is a wall ahead
         updateList(1);
         rotateCounterClockwise(robot);
     }
-    else if (right_sensor < 2 && timeOutOfRightSensor > 3) { // Corner right
+    else if (right_sensor < 2 && timeOutOfRightSensor > 2) { // Corner right
         updateList(0);
         rotateClockwise(robot);
         timeOutOfRightSensor = 0;
