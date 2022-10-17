@@ -366,7 +366,7 @@ void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_
         updateList(1);
         rotateCounterClockwise(robot);
     }
-    else if (right_sensor < 2 && timeOutOfRightSensor > 2) { // Corner right
+    else if (right_sensor < 2 && timeOutOfRightSensor > 1) { // Corner right
         updateList(0);
         rotateClockwise(robot);
         timeOutOfRightSensor = 0;
