@@ -9,7 +9,7 @@ int degreesLeftCounterClockwise = 0;
 
 int speed = 0;
 
-int timeOutOfRightSensor = 0; // This is used to turn the robot once it has been
+int timeOutOfRightSensor  = -1; // This is used to turn the robot once it has been
 // out of the right sensor for enough time to make a turn
 int timeNeededOutOfSensor = 0;
 
@@ -319,10 +319,7 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 // }
 
 //Slows down the robot and updates the speed to reflect the slow down
-void slowDown(struct Robot * robot) {
-    robot -> direction = DOWN;
-    speed -= 1;
-}
+
 
 //Makes the robot accelerate if the speed is under 5
 void moveForward(struct Robot * robot) {
@@ -333,7 +330,7 @@ void moveForward(struct Robot * robot) {
 }
 
 //Rotates the clockwise until the turn is complete
-void rotateClockwise(struct Robot * robot) {
+void rotateClockwiseLoop(struct Robot * robot) {
     robot -> direction = RIGHT;
     degreesLeftClockwise -= 15;
     if (degreesLeftClockwise <= 0)
@@ -342,47 +339,62 @@ void rotateClockwise(struct Robot * robot) {
 
 
 //Rotates the counter clockwise until the turn is complete
-void rotateCounterClockwise(struct Robot * robot) {
+void rotateCounterClockwiseLoop(struct Robot * robot) {
     robot -> direction = LEFT;
     degreesLeftCounterClockwise -= 15;
     if (degreesLeftCounterClockwise <= 0)
         inCounterClockwiseTurn = 0;
 }
 
+void rotateClockwise(struct Robot * robot, int degrees) {
+    inClockwiseTurn = 1;
+    degreesLeftClockwise = degrees;
+    rotateClockwiseLoop(robot);
+}
+
+void rotateCounterClockwise(struct Robot * robot, int degrees) {
+    inCounterClockwiseTurn = 1;
+    degreesLeftCounterClockwise = degrees;
+    rotateCounterClockwiseLoop(robot);
+}
+
+void updateSensors() {
+    timeNeededOutOfSensor = 0;
+    timeOutOfRightSensor = 0;
+}
+
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
+
     if (inClockwiseTurn == 1) // If turning clockwise continue to do so
-        rotateClockwise(robot);
+        rotateClockwiseLoop(robot);
     else if (inCounterClockwiseTurn == 1) // If turning counterClockwise continue to do so
-        rotateCounterClockwise(robot);
+        rotateCounterClockwiseLoop(robot);
+
     else {
-        if (firstMove == 0) {
-            inClockwiseTurn = 1;
-            degreesLeftClockwise = 90;
-            rotateClockwise(robot);
+        if (firstMove == 0) { // Move towards right wall initially
+            rotateClockwise(robot, 90);
             firstMove = 1;
-            return;
         }
-        if (front_centre_sensor >= 1) { // There is a wall ahead
-            inCounterClockwiseTurn = 1;
-            degreesLeftCounterClockwise = 90;
-            rotateCounterClockwise(robot);
+        else if (front_centre_sensor >= 1) { // There is a wall ahead
+            rotateCounterClockwise(robot, 90);
         }
-        else if (right_sensor < 2 && timeOutOfRightSensor > timeNeededOutOfSensor) { // Corner right
-            inClockwiseTurn = 1;
-            degreesLeftClockwise = 90;
-            timeNeededOutOfSensor = 0;
-            timeOutOfRightSensor = 0;
-            rotateClockwise(robot);
+        else if (right_sensor < 2 && timeOutOfRightSensor == timeNeededOutOfSensor) { // Corner right
+            updateSensors();
+            rotateClockwise(robot, 90);
+        }
+        else if (right_sensor < 2 && (timeOutOfRightSensor > timeNeededOutOfSensor)) { // Corner right
+            updateSensors();
+            rotateClockwise(robot, 180);
         }
         else if (right_sensor >= 1) { // Moving along a right wall
-            timeNeededOutOfSensor = right_sensor - 1;
-            timeOutOfRightSensor = 1;
+            timeNeededOutOfSensor = right_sensor;
+            timeOutOfRightSensor = 0;
             moveForward(robot);
         }
         else { // No right wall on the side, prepare for next turn
-            if (timeOutOfRightSensor >= 1)
+            if (timeNeededOutOfSensor >= 1)
                 timeOutOfRightSensor += 1;
             moveForward(robot);
         }
