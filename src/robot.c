@@ -325,7 +325,7 @@ void slowDown(struct Robot * robot) {
     ls[2][0] -= 1;
 }
 
-//Makes the robot accelerate if the speed is under 4
+//Makes the robot accelerate if the speed is under 5
 void moveForward(struct Robot * robot) {
     if (ls[2][0] < 5) {
         robot -> direction = UP;
@@ -333,8 +333,7 @@ void moveForward(struct Robot * robot) {
     }
 }
 
-//Rotates the robot clockwise, if the robot is moving ls[2][0] makes it stop to turn
-//The function will continue until the turn is complete
+//Rotates the clockwise until the turn is complete
 void rotateClockwise(struct Robot * robot) {
     robot -> direction = RIGHT;
     ls[0][1] -= 15;
@@ -342,8 +341,8 @@ void rotateClockwise(struct Robot * robot) {
         ls[0][0] = 0;
 }
 
-//Rotates the robot counter clockwise, if the robot is moving ls[2][0] makes it stop to turn
-//The function will continue until the turn is complete
+
+//Rotates the counter clockwise until the turn is complete
 void rotateCounterClockwise(struct Robot * robot) {
     robot -> direction = LEFT;
     ls[1][1] -= 15;
@@ -352,7 +351,8 @@ void rotateCounterClockwise(struct Robot * robot) {
 }
 
 
-void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_sensor, int right_sensor) {
+void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
+int left_sensor, int right_sensor) {
     if (ls[0][0] == 1) { // If turning clockwise continue to do so
         rotateClockwise(robot);
         return;
