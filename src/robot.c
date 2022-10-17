@@ -1,5 +1,6 @@
 #include "robot.h"
 
+int firstMove = 0;
 int inClockwiseTurn = 0;
 int degreesLeftClockwise = 0;
 
@@ -10,6 +11,7 @@ int speed = 0;
 
 int timeOutOfRightSensor = 0; // This is used to turn the robot once it has been
 // out of the right sensor for enough time to make a turn
+int timeNeededOutOfSensor = 0;
 
 void setup_robot(struct Robot *robot){
     robot -> x = OVERALL_WINDOW_WIDTH / 2 - 50;
@@ -323,8 +325,8 @@ void slowDown(struct Robot * robot) {
 }
 
 //Makes the robot accelerate if the speed is under 5
-void moveForward(struct Robot * robot, int modifier) {
-    if (speed < (6 + modifier)) {
+void moveForward(struct Robot * robot) {
+    if (speed < 5) {
         robot -> direction = UP;
         speed += 1;
     }
@@ -355,25 +357,34 @@ int left_sensor, int right_sensor) {
     else if (inCounterClockwiseTurn == 1) // If turning counterClockwise continue to do so
         rotateCounterClockwise(robot);
     else {
+        if (firstMove == 0) {
+            inClockwiseTurn = 1;
+            degreesLeftClockwise = 90;
+            rotateClockwise(robot);
+            firstMove = 1;
+            return;
+        }
         if (front_centre_sensor >= 1) { // There is a wall ahead
             inCounterClockwiseTurn = 1;
             degreesLeftCounterClockwise = 90;
             rotateCounterClockwise(robot);
         }
-        else if (right_sensor < 2 && timeOutOfRightSensor > 1) { // Corner right
+        else if (right_sensor < 2 && timeOutOfRightSensor > timeNeededOutOfSensor) { // Corner right
             inClockwiseTurn = 1;
             degreesLeftClockwise = 90;
+            timeNeededOutOfSensor = 0;
             timeOutOfRightSensor = 0;
             rotateClockwise(robot);
         }
         else if (right_sensor >= 1) { // Moving along a right wall
+            timeNeededOutOfSensor = right_sensor - 1;
             timeOutOfRightSensor = 1;
-            moveForward(robot, 1);
+            moveForward(robot);
         }
         else { // No right wall on the side, prepare for next turn
             if (timeOutOfRightSensor >= 1)
                 timeOutOfRightSensor += 1;
-            moveForward(robot, -2);
+            moveForward(robot);
         }
     }
 }
