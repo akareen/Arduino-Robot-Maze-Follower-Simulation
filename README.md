@@ -4,12 +4,14 @@ ELEC1601 Robot Project Simulation
 **Current progress:**
 * Reduced code length
 * Added comments to clarify functionality
+* Basic Wall following algorithm complete
+* Basic maze finished in 44 seconds
 
 
 **List of things to do:**
 * Improve GUI of the simulation
-* Make the algorithm for the robot (various steps)
-* Create new mazes for the robot
+* Improve the algorithm for the robot (various including curves)
+* Test on other mazes for the robot
 * Incorporate acceleration and momentum
 
 **Rules to be aware of:**
