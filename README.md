@@ -5,7 +5,7 @@ ELEC1601 Robot Project Simulation
 * Reduced code length
 * Added comments to clarify functionality
 * Basic Wall following algorithm complete
-* Basic maze finished in 37 seconds
+* Basic maze finished in 29.5 seconds
 
 
 **List of things to do:**
