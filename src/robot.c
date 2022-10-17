@@ -75,7 +75,7 @@ void robotSuccess(struct Robot * robot, int msec) {
     if (!robot->crashed){
         printf("Success!!!!!\n\n");
         printf("Time taken %d seconds %d milliseconds \n", msec / 1000, msec % 1000);
-        printf("Press space to start again or press N for the next maze\n");
+        printf("Press space to start again or press N for the next maze or B for previous\n");
     }
     robot -> crashed = 1;
 }

@@ -42,7 +42,9 @@ int main(int argc, char *argv[]) {
         return 0;
     };
     
-    init();
+    if (init()){
+        return 1;
+    };
 
     SDL_Event event;
     while(!done){
@@ -110,6 +112,13 @@ int main(int argc, char *argv[]) {
             }
             if(state[SDL_SCANCODE_N]){
                 maze_number++;
+                memset(&head, 0, sizeof(head));
+                SDL_DestroyRenderer(renderer);
+                SDL_DestroyWindow(window);
+                init();
+            }
+            if(state[SDL_SCANCODE_B]){
+                maze_number--;
                 memset(&head, 0, sizeof(head));
                 SDL_DestroyRenderer(renderer);
                 SDL_DestroyWindow(window);
