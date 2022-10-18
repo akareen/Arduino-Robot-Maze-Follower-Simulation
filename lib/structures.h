@@ -1,12 +1,12 @@
 #ifndef STRUCTURES_H_INCLUDED
 #define STRUCTURES_H_INCLUDED
 
-#define UP 1
-#define DOWN 2
+#define ACCELERATE 1
+#define BRAKE 2
 #define LEFT 3
 #define RIGHT 4
-#define DOWNLEFT 5
-#define DOWNRIGHT 6
+#define BRAKELEFT 5
+#define BRAKERIGHT 6
 
 #define OVERALL_WINDOW_WIDTH 640
 #define OVERALL_WINDOW_HEIGHT 480
