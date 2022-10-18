@@ -21,8 +21,6 @@ This can be done by creating an integer array with a code for each movement the
 robot has made. When the robot is a few steps away from a turn it can decelerate.
 This will mean the robot can accelerate faster in a straight line and slow down for a turn.
 
-*Fix bug with init() function
-
 **Rules to be aware of:**
 * Maximum speed change of 1 (per timestep), 
     use 0.0 - 1.0 to make it smoother
