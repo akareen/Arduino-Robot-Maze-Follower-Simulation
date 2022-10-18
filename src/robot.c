@@ -1,7 +1,5 @@
 #include "robot.h"
 
-
-int firstMove = 0;
 int speed = 0;
 int maxSpeed = 4;
 
@@ -24,6 +22,7 @@ void setup_robot(struct Robot *robot){
     robot -> currentSpeed = 0;
     robot -> crashed = 0;
     robot -> auto_mode = 0;
+    robot -> firstMove = 0;
     printf("Press arrow keys to move manually, or enter to move automatically\n\n");
 }
 
@@ -352,19 +351,19 @@ void turnRight(struct Robot * robot) {
 }
 
 void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
-    if (firstMove == 0) {
+    if (robot -> firstMove == 0) {
         inClockwise = 1;
         clockwiseDegreesLeft = 90;
-        firstMove++;
+        robot -> firstMove++;
     }
-    if (firstMove == 1) {
+    if (robot -> firstMove == 1) {
         clockwiseTurn(robot);
         if (inClockwise == 0)
-            firstMove++;
+            robot -> firstMove++;
     }
-    else if (firstMove == 2) {
+    else if (robot -> firstMove == 2) {
         if (right_sensor > 1)
-            firstMove = 3;
+            robot -> firstMove = 3;
         else if (front_sensor > 1)
             turnLeft(robot);
         else
@@ -375,7 +374,7 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
     printf("SPEED %d\n", speed);
-    if (firstMove < 3) { // Move to the first right wall
+    if (robot -> firstMove < 3) { // Move to the first right wall
         firstStep(robot, front_centre_sensor, right_sensor);
     }
     else if (front_centre_sensor >= 1) // wall ahead
