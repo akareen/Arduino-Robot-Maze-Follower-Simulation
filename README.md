@@ -6,6 +6,7 @@ ELEC1601 Robot Project Simulation
 * Added comments to clarify functionality
 * Basic Wall following algorithm complete
 * Basic maze finished in 29.4 seconds
+* Mazes can now be changed automatically, press N for next maze, B for previous
 
 
 **List of things to do:**
@@ -14,6 +15,7 @@ ELEC1601 Robot Project Simulation
 * Improve the algorithm for the robot (various steps including curves)
 * Test on other mazes for the robot
 * Incorporate acceleration and momentum
+* Fix minor bugs for changing maze
 * Learn the maze the first time around to make it faster for subsequent runs. 
 This can be done by creating an integer array with a code for each movement the
 robot has made. When the robot is a few steps away from a turn it can decelerate.
