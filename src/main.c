@@ -23,9 +23,11 @@ int main(int argc, char *argv[]) {
     clock_t start_time, end_time;
     int msec;
     int crashed = 0;
+    
 
     //Maze Number that determines the maze used
     int maze_number = 1;
+    const static int TOTAL_MAZES = 11;
 
     int init() {
         if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -34,6 +36,15 @@ int main(int argc, char *argv[]) {
         
         window = SDL_CreateWindow("Robot Maze", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, OVERALL_WINDOW_WIDTH, OVERALL_WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
         renderer = SDL_CreateRenderer(window, -1, 0);
+
+       
+
+        //Loops the maze around if you go past the last one
+        if (maze_number > TOTAL_MAZES){
+            maze_number = 0;
+        } else if (maze_number < 1){
+            maze_number = TOTAL_MAZES;
+        }
 
         //Setup maze
         setup_maze(&head, maze_number);
