@@ -1,6 +1,9 @@
 # Project-Simulation
 ELEC1601 Robot Project Simulation
 
+**MAP PROGRESS**
+1 yes, 2 no, 3 yes, 4 yes, 5 no, 6 yes, 7 no, 8 yes, 9 no, 10 yes
+
 **Current progress:**
 * Reduced code length
 * Added comments to clarify functionality
