@@ -1,8 +1,17 @@
 # Project-Simulation
 ELEC1601 Robot Project Simulation
 
-**MAP PROGRESS**
-1 yes, 2 no, 3 yes, 4 yes, 5 no, 6 yes, 7 no, 8 yes, 9 no, 10 yes
+**MAP PROGRESS 60%**
+* 1 yes
+* 2 yes
+* 3 no (error at start)
+* 4 no (is not handling narrow well) 
+* 5 yes
+* 6 no (didnt go through narrow at end) 
+* 7 yes 
+* 8 yes 
+* 9 yes 
+* 10 no (dies straight away)
 
 **Current progress:**
 * Reduced code length
@@ -10,13 +19,14 @@ ELEC1601 Robot Project Simulation
 * Basic Wall following algorithm complete
 * Basic maze finished in 29.4 seconds
 * Mazes can now be changed automatically, press N for next maze, B for previous
+* Brake at the same time as turning
+* Improved GUI of the simulation
 
 
 **List of things to do:**
-* Accelerate / Brake at the same time as turning
-* Improve GUI of the simulation
+* Add timer to GUI
 * Improve the algorithm for the robot (various steps including curves)
-* Test on other mazes for the robot
+* Improve on mazes not working on
 * Incorporate acceleration and momentum
 * Fix minor bugs for changing maze
 * Learn the maze the first time around to make it faster for subsequent runs. 
