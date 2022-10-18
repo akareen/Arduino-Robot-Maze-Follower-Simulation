@@ -13,7 +13,6 @@ void setup_robot(struct Robot *robot){
     robot -> crashed = 0;
     robot -> auto_mode = 0;
     
-
     robot -> firstMove = 0;
     robot -> closeness = 2;
     //Must comply with regulations
@@ -149,9 +148,7 @@ int checkRobotSensorRightAllWalls(struct Robot * robot, struct Wall_collection *
     return checkAllWalls(robot, head, 2);
 }
 
-
-
-//TODO
+//Function that updates the robot
 void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
     double xDir, yDir;
 
@@ -267,21 +264,24 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
         //yDir = round(robotCentreY+(ROBOT_WIDTH/2-2)*sin((robot->angle)*PI/180)+(-ROBOT_HEIGHT/2-SENSOR_VISION+sensor_sensitivity*i)*cos((robot->angle)*PI/180));
 }
 
+//If the speed exceeds the maximum brings it back down
 void resetToMaxSpeed(struct Robot * robot) {
     if (robot -> currentSpeed > MAX_ROBOT_SPEED)
         robot -> currentSpeed = MAX_ROBOT_SPEED;
 }
 
+
+//Moves the robot based on the direction provided
 void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier double
     if (crashed)
         robot -> currentSpeed = 0;
     else {
         switch(robot -> direction){
             //Fix all of these to make it continuous not positional
-            case UP :
+            case ACCELERATE :
                 robot -> currentSpeed += DEFAULT_SPEED_CHANGE;
                 resetToMaxSpeed(robot); break;
-            case DOWN :
+            case BRAKE :
                 robot -> currentSpeed -= DEFAULT_SPEED_CHANGE;
                 resetToMaxSpeed(robot); break;
             case LEFT :
@@ -290,11 +290,11 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
             case RIGHT :
                 robot -> angle = (robot -> angle + DEFAULT_ANGLE_CHANGE) % 360;
                 break;
-            case DOWNLEFT :
+            case BRAKELEFT :
                 robot->currentSpeed -= DEFAULT_SPEED_CHANGE;
                 robot -> angle = (robot -> angle + 360 - DEFAULT_ANGLE_CHANGE) % 360;
                 break;
-            case DOWNRIGHT :
+            case BRAKERIGHT :
                 robot->currentSpeed -= DEFAULT_SPEED_CHANGE;
                 robot -> angle = (robot -> angle + DEFAULT_ANGLE_CHANGE) % 360;
                 break;
@@ -310,6 +310,7 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 }
 
 
+//Stores consecutive movement, ex: 6 right turns = {3,6}
 void updateMoveCodes(struct Robot * robot, int code) {
     if (robot -> moveCodes[0] == code)
         robot -> moveCodes[1] += 1;
@@ -319,46 +320,54 @@ void updateMoveCodes(struct Robot * robot, int code) {
     }
 }
 
-
+//Accelerates the robot forward as long as it is under the custom speedCap
 void moveForward(struct Robot * robot) {
     if ((robot -> currentSpeed) < robot -> speedCap) {
-        robot -> direction = UP;
+        robot -> direction = ACCELERATE;
         updateMoveCodes(robot, 0);
     }
 }
 
+//Turns on the brakes as long as the robot is moving
 void slowDown(struct Robot * robot) {
     if ((robot -> currentSpeed) > 0) {
-        robot -> direction = DOWN;
+        robot -> direction = BRAKE;
         updateMoveCodes(robot, 1);
     }
 }
 
+//If the speed is higher than 3 brakes and turns left at the same time
+//Otherwise just turns left
 void turnLeft(struct Robot * robot) {
     updateMoveCodes(robot, 2);
     if (robot -> currentSpeed > 3)
-        robot -> direction = DOWNLEFT; // Brake and turn left same time
+        robot -> direction = BRAKELEFT; // Brake and turn left same time
     else
         robot -> direction = LEFT;
 }
 
+//If the speed is higher than 3 brakes and turns right at the same time
+//Otherwise just turns right
 void turnRight(struct Robot * robot) {
     updateMoveCodes(robot, 3);
     if (robot -> currentSpeed > 3)
-        robot -> direction = DOWNRIGHT; // Brake and turn right same time
+        robot -> direction = BRAKERIGHT; // Brake and turn right same time
     else
          robot -> direction = RIGHT;
 }
 
-
+//First step of the program if there is a right wall it is finished
+//Otherwise it will do a 90 degree clockwise turn and move forward until it
+//finds a wall infront of it upon which it will turn left and exit the function
 void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
     if (right_sensor > 1) {
         robot -> firstMove = 2;
         moveForward(robot);
     }
+    
     if (robot -> firstMove == 0) {
         turnRight(robot);   
-        if (robot -> moveCodes[0] == 3 && robot -> moveCodes[1] >= 6)
+        if (robot -> moveCodes[0] == 3 && robot -> moveCodes[1] >= 6) //90 degrees complete
             robot -> firstMove++;
     }
     else if (robot -> firstMove == 1) {            
@@ -384,35 +393,36 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
-    if (left_sensor >= 1 && right_sensor >= 1) { // in a narrow path
+    if (left_sensor >= 1 && right_sensor >= 1) { //In a narrow path
         robot -> speedCap = 4;
-        if (robot -> currentSpeed > 3) { // slow it enought for turns
+        if (robot -> currentSpeed > 3) { //Slow it enought for turns
             slowDown(robot);
             return;
         }
     }
-    else { // normal top speed
-        robot -> speedCap = 7;
+    else { //Normal top speed
+        robot -> speedCap = 7; //This needs to be adjusted more
     }
+
+    //Slow down for u-turns
     if (left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) {
-        // slow down for u turn
-        if (robot -> currentSpeed > 0)
+        if (robot -> currentSpeed > 0) //Get to a complete stop in a u-turn
             slowDown(robot); 
         else
             turnLeft(robot);
         return;
     }
 
-        
+
     if (robot -> firstMove < 2) { // Move to the first right wall
         firstStep(robot, front_centre_sensor, right_sensor);
     }
     else if (front_centre_sensor >= 1) // wall ahead
         turnLeft(robot);
-    else if (right_sensor < robot -> closeness)
+    else if (right_sensor < robot -> closeness) //not close enough to right wall
         turnRight(robot);
-    else if (right_sensor == robot -> closeness)
+    else if (right_sensor == robot -> closeness) //close enough to right wall
         moveForward(robot);
-    else if (right_sensor > robot -> closeness)
+    else if (right_sensor > robot -> closeness) //too close to right wall
         turnLeft(robot);
 }
