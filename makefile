@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -std=c17 -Wall -Werror
+CFLAGS := -std=c17 -Wall #-Werror
 LIBFLAGS :=  -ISDL2/include/SDL2  -ISDL2 -ISDL2/include 
 LINKFLAGS := `sdl2-config --cflags --libs` -lm
 WINFLAGS :=  -lmingw32 -LSDL2/lib -lSDL2main -lSDL2
