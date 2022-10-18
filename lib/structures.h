@@ -5,6 +5,8 @@
 #define DOWN 2
 #define LEFT 3
 #define RIGHT 4
+#define DOWNLEFT 5
+#define DOWNRIGHT 6
 
 #define OVERALL_WINDOW_WIDTH 640
 #define OVERALL_WINDOW_HEIGHT 480

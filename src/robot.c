@@ -1,17 +1,16 @@
 #include "robot.h"
 
+
 int firstMove = 0;
-int inClockwiseTurn = 0;
-int degreesLeftClockwise = 0;
-
-int inCounterClockwiseTurn = 0;
-int degreesLeftCounterClockwise = 0;
-
 int speed = 0;
+int maxSpeed = 4;
 
-int timeOutOfRightSensor  = -1; // This is used to turn the robot once it has been
-// out of the right sensor for enough time to make a turn
-int timeNeededOutOfSensor = 0;
+int inClockwise = 0;
+int inCounterClockwise = 0;
+
+int clockwiseDegreesLeft = 0;
+
+int turnComplete = 0;
 
 void setup_robot(struct Robot *robot){
     robot -> x = OVERALL_WINDOW_WIDTH / 2 - 50;
@@ -276,13 +275,6 @@ void resetToMaxSpeed(struct Robot * robot) {
         robot -> currentSpeed = MAX_ROBOT_SPEED;
 }
 
-
-//TODO = Fix this method to make it work on smaller amounts of speed changes
-//Implement as a 0.0 - 1.0 * DEFAULT_SPEED_CHANGE, to make it a more fluid motion
-//The more fluid motion will allow tighter turns, since the servo is continuous
-//Not positional
-//
-//FINISHED = made the method more readable and concise
 void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier double
     if (crashed)
         robot -> currentSpeed = 0;
@@ -301,6 +293,17 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
             case RIGHT :
                 robot -> angle = (robot -> angle + DEFAULT_ANGLE_CHANGE) % 360;
                 break;
+            case DOWNLEFT :
+                robot->currentSpeed -= DEFAULT_SPEED_CHANGE;
+                robot -> angle = (robot -> angle + 360 - DEFAULT_ANGLE_CHANGE) % 360;
+                speed--;
+                break;
+            case DOWNRIGHT :
+                robot->currentSpeed -= DEFAULT_SPEED_CHANGE;
+                robot -> angle = (robot -> angle + DEFAULT_ANGLE_CHANGE) % 360;
+                speed--;
+                break;
+
         }
     }
     robot -> direction = 0;
@@ -312,107 +315,75 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 }
 
 
-// void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, int left_sensor, int right_sensor) {
-//     if (front_centre_sensor == 0) {
-//         if (robot->currentSpeed < 2)
-//             robot->direction = UP;
-//     }
-//     else if ((robot->currentSpeed > 0) && ((front_centre_sensor >= 1) && (left_sensor == 0) && (right_sensor == 0)) ) {
-//         robot->direction = DOWN;
-//     }
-//     else if ((robot->currentSpeed == 0) && ((front_centre_sensor >= 1) && (left_sensor == 0)) ) {
-//         robot->direction = LEFT;
-//     }
-//     else if ((robot->currentSpeed > 0) && ((right_sensor >= 1)) ) {
-//         robot->direction = LEFT;
-//     }
-//     else if ((robot->currentSpeed>0) && ((left_sensor >= 1)) ) {
-//         robot -> direction = RIGHT;
-//     }
-// }
-
-//Slows down the robot and updates the speed to reflect the slow down
+void clockwiseTurn(struct Robot * robot) {
+    clockwiseDegreesLeft -= 15;
+    robot -> direction = RIGHT;
+    if (clockwiseDegreesLeft <= 0)
+        inClockwise = 0;
+}
 
 
-//Makes the robot accelerate if the speed is under 5
 void moveForward(struct Robot * robot) {
-    if (speed < 5) {
+    if (speed < maxSpeed) {
         robot -> direction = UP;
         speed += 1;
     }
 }
 
-//Rotates the clockwise until the turn is complete
-void rotateClockwiseLoop(struct Robot * robot) {
-    robot -> direction = RIGHT;
-    degreesLeftClockwise -= 15;
-    if (degreesLeftClockwise <= 0)
-        inClockwiseTurn = 0;
-}
-
-
-//Rotates the counter clockwise until the turn is complete
-void rotateCounterClockwiseLoop(struct Robot * robot) {
-    robot -> direction = LEFT;
-    degreesLeftCounterClockwise -= 15;
-    if (degreesLeftCounterClockwise <= 0)
-        inCounterClockwiseTurn = 0;
-}
-
-void rotateClockwise(struct Robot * robot, int degrees) {
-    inClockwiseTurn = 1;
-    degreesLeftClockwise = degrees;
-    rotateClockwiseLoop(robot);
-}
-
-void rotateCounterClockwise(struct Robot * robot, int degrees) {
-    inCounterClockwiseTurn = 1;
-    degreesLeftCounterClockwise = degrees;
-    rotateCounterClockwiseLoop(robot);
-}
-
-void updateSensors() {
-    timeNeededOutOfSensor = 0;
-    timeOutOfRightSensor = 0;
-}
-
-
-void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
-int left_sensor, int right_sensor) {
-
-    if (inClockwiseTurn == 1) // If turning clockwise continue to do so
-        rotateClockwiseLoop(robot);
-    else if (inCounterClockwiseTurn == 1) // If turning counterClockwise continue to do so
-        rotateCounterClockwiseLoop(robot);
-
-    else {
-        if (firstMove == 0) { // Move towards right wall initially
-            rotateClockwise(robot, 90);
-            firstMove = 1;
-        }
-        else if (front_centre_sensor >= 1) { // There is a wall ahead
-            rotateCounterClockwise(robot, 90);
-        }
-        else if (right_sensor < 2 && timeOutOfRightSensor == timeNeededOutOfSensor) { // Corner right
-            updateSensors();
-            rotateClockwise(robot, 90);
-        }
-        else if (right_sensor < 2 && (timeOutOfRightSensor > timeNeededOutOfSensor)) { // Corner right
-            updateSensors();
-            rotateClockwise(robot, 180);
-        }
-        else if (right_sensor >= 1) { // Moving along a right wall
-            timeNeededOutOfSensor = right_sensor;
-            timeOutOfRightSensor = 0;
-            moveForward(robot);
-        }
-        else { // No right wall on the side, prepare for next turn
-            if (timeNeededOutOfSensor >= 1)
-                timeOutOfRightSensor += 1;
-            moveForward(robot);
-        }
+void slowDown(struct Robot * robot) {
+    if (speed > 0) {
+        robot -> direction = DOWN;
+        speed -= 1;
     }
 }
 
+void turnLeft(struct Robot * robot) {
+    if (speed > 3)
+        robot -> direction = DOWNLEFT; // Brake and turn left same time
+    else
+         robot -> direction = LEFT;
+}
 
+void turnRight(struct Robot * robot) {
+    if (speed > 3)
+        robot -> direction = DOWNRIGHT; // Brake and turn right same time
+    else
+         robot -> direction = RIGHT;
+}
 
+void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
+    if (firstMove == 0) {
+        inClockwise = 1;
+        clockwiseDegreesLeft = 90;
+        firstMove++;
+    }
+    if (firstMove == 1) {
+        clockwiseTurn(robot);
+        if (inClockwise == 0)
+            firstMove++;
+    }
+    else if (firstMove == 2) {
+        if (right_sensor > 1)
+            firstMove = 3;
+        else if (front_sensor > 1)
+            turnLeft(robot);
+        else
+            moveForward(robot);
+    }
+}
+
+void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
+int left_sensor, int right_sensor) {
+    printf("SPEED %d\n", speed);
+    if (firstMove < 3) { // Move to the first right wall
+        firstStep(robot, front_centre_sensor, right_sensor);
+    }
+    else if (front_centre_sensor >= 1) // wall ahead
+        turnLeft(robot);
+    else if (right_sensor < 2)
+        turnRight(robot);
+    else if (right_sensor == 2)
+        moveForward(robot);
+    else if (right_sensor > 2)
+        turnLeft(robot);
+}
