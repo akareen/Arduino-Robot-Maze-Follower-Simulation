@@ -4,11 +4,11 @@ ELEC1601 Robot Project Simulation
 **MAP PROGRESS 60%**
 * 1 yes
 * 2 yes
-* 3 no (error at start)
-* 4 no (is not handling narrow well) 
-* 5 yes
-* 6 no (didnt go through narrow at end) 
-* 7 yes 
+* 3 yes
+* 4 yes 
+* 5 no (is not handling narrow well) 
+* 6 yes 
+* 7 no (didnt go through narrow at end) 
 * 8 yes 
 * 9 yes 
 * 10 no (dies straight away)

@@ -48,6 +48,8 @@ struct Robot {
     int inCounterClockwise;
     int clockwiseDegreesLeft;
     int turnComplete;
+    int closeness;
+    int speedCap;
 };
 
 #endif // STRUCTURES_H_INCLUDED

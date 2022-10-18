@@ -1,7 +1,5 @@
 #include "robot.h"
 
-int maxSpeed = 4;
-
 void setup_robot(struct Robot *robot){
     robot -> x = OVERALL_WINDOW_WIDTH / 2 - 50;
     robot -> y = OVERALL_WINDOW_HEIGHT - 50;
@@ -17,13 +15,12 @@ void setup_robot(struct Robot *robot){
     
 
     robot -> firstMove = 0;
-
     robot -> inClockwise = 0;
     robot -> inCounterClockwise = 0;
-
     robot -> clockwiseDegreesLeft = 0;
-
     robot -> turnComplete = 0;
+    robot -> closeness = 2;
+    robot -> speedCap = 7;
 
     printf("Press arrow keys to move manually, or enter to move automatically\n\n");
 }
@@ -323,7 +320,7 @@ void clockwiseTurn(struct Robot * robot) {
 
 
 void moveForward(struct Robot * robot) {
-    if ((robot -> currentSpeed) < maxSpeed) {
+    if ((robot -> currentSpeed) < robot -> speedCap) {
         robot -> direction = UP;
     }
 }
@@ -349,6 +346,10 @@ void turnRight(struct Robot * robot) {
 }
 
 void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
+    if (right_sensor > 1) {
+        robot -> firstMove = 3;
+        moveForward(robot);
+    }
     if (robot -> firstMove == 0) {
         robot -> inClockwise = 1;
         robot -> clockwiseDegreesLeft = 90;
@@ -359,11 +360,11 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
         if (robot -> inClockwise == 0)
             robot -> firstMove++;
     }
-    else if (robot -> firstMove == 2) {
-        if (right_sensor > 1)
+    else if (robot -> firstMove == 2) {            
+        if (front_sensor >= 1) {
             robot -> firstMove = 3;
-        else if (front_sensor > 1)
             turnLeft(robot);
+        }
         else
             moveForward(robot);
     }
@@ -371,16 +372,35 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
-    printf("SPEED %d\n", robot -> currentSpeed);
+    if (left_sensor >= 1 && right_sensor >= 1) { // in a narrow path
+        robot -> speedCap = 4;
+        if (robot -> currentSpeed > 3) { // slow it enought for turns
+            slowDown(robot);
+            return;
+        }
+    }
+    else { // normal top speed
+        robot -> speedCap = 7;
+    }
+    if (left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) {
+        // slow down for u turn
+        if (robot -> currentSpeed > 0)
+            robot -> direction = DOWN; 
+        else
+            robot -> direction = LEFT;
+        return;
+    }
+
+        
     if (robot -> firstMove < 3) { // Move to the first right wall
         firstStep(robot, front_centre_sensor, right_sensor);
     }
     else if (front_centre_sensor >= 1) // wall ahead
         turnLeft(robot);
-    else if (right_sensor < 2)
+    else if (right_sensor < robot -> closeness)
         turnRight(robot);
-    else if (right_sensor == 2)
+    else if (right_sensor == robot -> closeness)
         moveForward(robot);
-    else if (right_sensor > 2)
+    else if (right_sensor > robot -> closeness)
         turnLeft(robot);
 }
