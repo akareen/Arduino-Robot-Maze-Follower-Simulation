@@ -50,6 +50,7 @@ struct Robot {
     int turnComplete;
     int closeness;
     int speedCap;
+    int moveCodes[2];
 };
 
 #endif // STRUCTURES_H_INCLUDED

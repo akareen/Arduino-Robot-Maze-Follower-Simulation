@@ -22,6 +22,8 @@ void setup_robot(struct Robot *robot){
     robot -> closeness = 2;
     //Must comply with regulations
     robot -> speedCap = 7;
+    robot -> moveCodes[0] = 0;
+    robot -> moveCodes[1] = 0;
 
     printf("Press arrow keys to move manually, or enter to move automatically\n\n");
 }
@@ -75,9 +77,9 @@ void robotCrash(struct Robot * robot) {
 //Sets the current speed to 0, prints success message and sets crashed to false
 void robotSuccess(struct Robot * robot, int msec) {
     robot -> currentSpeed = 0;
-    if (!robot->crashed){
+    if (!robot -> crashed){
         printf("Success!!!!!\n\n");
-        printf("Time taken %d seconds %d milliseconds \n", msec / 1000, msec % 1000);
+        printf("Time taken %d seconds %d milliseconds\n", msec / 1000, msec % 1000);
         printf("Press space to start again or press N for the next maze or B for previous\n");
     }
     robot -> crashed = 1;
@@ -312,27 +314,32 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 }
 
 
-void clockwiseTurn(struct Robot * robot) {
-    robot -> clockwiseDegreesLeft -= 15;
-    robot -> direction = RIGHT;
-    if (robot -> clockwiseDegreesLeft <= 0)
-        robot -> inClockwise = 0;
+void updateMoveCodes(struct Robot * robot, int code) {
+    if (robot -> moveCodes[0] == code)
+        robot -> moveCodes[1]++;
+    else {
+        robot -> moveCodes[0] = code;
+        robot -> moveCodes[1] = 1;
+    }
 }
 
 
 void moveForward(struct Robot * robot) {
     if ((robot -> currentSpeed) < robot -> speedCap) {
         robot -> direction = UP;
+        updateMoveCodes(robot, 0);
     }
 }
 
 void slowDown(struct Robot * robot) {
     if ((robot -> currentSpeed) > 0) {
         robot -> direction = DOWN;
+        updateMoveCodes(robot, 1);
     }
 }
 
 void turnLeft(struct Robot * robot) {
+    updateMoveCodes(robot, 3);
     if (robot -> currentSpeed > 3)
         robot -> direction = DOWNLEFT; // Brake and turn left same time
     else
@@ -340,10 +347,18 @@ void turnLeft(struct Robot * robot) {
 }
 
 void turnRight(struct Robot * robot) {
+    updateMoveCodes(robot, 4);
     if (robot -> currentSpeed > 3)
         robot -> direction = DOWNRIGHT; // Brake and turn right same time
     else
          robot -> direction = RIGHT;
+}
+
+void clockwiseTurn(struct Robot * robot) {
+    robot -> clockwiseDegreesLeft -= 15;
+    turnRight(robot);
+    if (robot -> clockwiseDegreesLeft <= 0)
+        robot -> inClockwise = 0;
 }
 
 void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
@@ -377,6 +392,12 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
 // Im thinking that we make a variable that stores the last turn
 //if the robot turned right 4 times (90 degrees) or turned left 4 times then it looped
 
+// Have added movecodes that stores the above, have not done loop code yet
+// int[][] moveCodes: 
+// [0]:  0 = forward, 1 = down, 2 = left, 3 = right
+// [1]: number of consecutive
+
+
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
     if (left_sensor >= 1 && right_sensor >= 1) { // in a narrow path
@@ -392,9 +413,9 @@ int left_sensor, int right_sensor) {
     if (left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) {
         // slow down for u turn
         if (robot -> currentSpeed > 0)
-            robot -> direction = DOWN; 
+            slowDown(robot); 
         else
-            robot -> direction = LEFT;
+            turnLeft(robot);
         return;
     }
 
