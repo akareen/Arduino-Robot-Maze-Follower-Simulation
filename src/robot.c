@@ -20,6 +20,7 @@ void setup_robot(struct Robot *robot){
     robot -> clockwiseDegreesLeft = 0;
     robot -> turnComplete = 0;
     robot -> closeness = 2;
+    //Must comply with regulations
     robot -> speedCap = 7;
 
     printf("Press arrow keys to move manually, or enter to move automatically\n\n");
@@ -369,6 +370,12 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
             moveForward(robot);
     }
 }
+
+//TODO:
+//Account better for narrow paths
+//Insert some code that detects if the robot is stuck in a loop\
+// Im thinking that we make a variable that stores the last turn
+//if the robot turned right 4 times (90 degrees) or turned left 4 times then it looped
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
