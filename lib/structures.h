@@ -44,10 +44,6 @@ struct Robot {
     int auto_mode;
 
     int firstMove;
-    int inClockwise;
-    int inCounterClockwise;
-    int clockwiseDegreesLeft;
-    int turnComplete;
     int closeness;
     int speedCap;
     int moveCodes[2];

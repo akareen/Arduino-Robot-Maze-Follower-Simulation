@@ -15,10 +15,6 @@ void setup_robot(struct Robot *robot){
     
 
     robot -> firstMove = 0;
-    robot -> inClockwise = 0;
-    robot -> inCounterClockwise = 0;
-    robot -> clockwiseDegreesLeft = 0;
-    robot -> turnComplete = 0;
     robot -> closeness = 2;
     //Must comply with regulations
     robot -> speedCap = 7;
@@ -316,7 +312,7 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 
 void updateMoveCodes(struct Robot * robot, int code) {
     if (robot -> moveCodes[0] == code)
-        robot -> moveCodes[1]++;
+        robot -> moveCodes[1] += 1;
     else {
         robot -> moveCodes[0] = code;
         robot -> moveCodes[1] = 1;
@@ -339,7 +335,7 @@ void slowDown(struct Robot * robot) {
 }
 
 void turnLeft(struct Robot * robot) {
-    updateMoveCodes(robot, 3);
+    updateMoveCodes(robot, 2);
     if (robot -> currentSpeed > 3)
         robot -> direction = DOWNLEFT; // Brake and turn left same time
     else
@@ -347,38 +343,27 @@ void turnLeft(struct Robot * robot) {
 }
 
 void turnRight(struct Robot * robot) {
-    updateMoveCodes(robot, 4);
+    updateMoveCodes(robot, 3);
     if (robot -> currentSpeed > 3)
         robot -> direction = DOWNRIGHT; // Brake and turn right same time
     else
          robot -> direction = RIGHT;
 }
 
-void clockwiseTurn(struct Robot * robot) {
-    robot -> clockwiseDegreesLeft -= 15;
-    turnRight(robot);
-    if (robot -> clockwiseDegreesLeft <= 0)
-        robot -> inClockwise = 0;
-}
 
 void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
     if (right_sensor > 1) {
-        robot -> firstMove = 3;
+        robot -> firstMove = 2;
         moveForward(robot);
     }
     if (robot -> firstMove == 0) {
-        robot -> inClockwise = 1;
-        robot -> clockwiseDegreesLeft = 90;
-        robot -> firstMove++;
-    }
-    if (robot -> firstMove == 1) {
-        clockwiseTurn(robot);
-        if (robot -> inClockwise == 0)
+        turnRight(robot);   
+        if (robot -> moveCodes[0] == 3 && robot -> moveCodes[1] >= 6)
             robot -> firstMove++;
     }
-    else if (robot -> firstMove == 2) {            
+    else if (robot -> firstMove == 1) {            
         if (front_sensor >= 1) {
-            robot -> firstMove = 3;
+            robot -> firstMove = 2;
             turnLeft(robot);
         }
         else
@@ -393,10 +378,9 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
 //if the robot turned right 4 times (90 degrees) or turned left 4 times then it looped
 
 // Have added movecodes that stores the above, have not done loop code yet
-// int[][] moveCodes: 
-// [0]:  0 = forward, 1 = down, 2 = left, 3 = right
+// int[] moveCodes: 
+// [0]: 0 = forward, 1 = down, 2 = left, 3 = right
 // [1]: number of consecutive
-
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
@@ -420,7 +404,7 @@ int left_sensor, int right_sensor) {
     }
 
         
-    if (robot -> firstMove < 3) { // Move to the first right wall
+    if (robot -> firstMove < 2) { // Move to the first right wall
         firstStep(robot, front_centre_sensor, right_sensor);
     }
     else if (front_centre_sensor >= 1) // wall ahead
