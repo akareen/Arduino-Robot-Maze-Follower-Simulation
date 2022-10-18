@@ -9,7 +9,11 @@ void wallSetPosition(struct Wall * wall, int x, int y, int width, int height) {
 
 void wallUpdate(SDL_Renderer * renderer, struct Wall * wall){
     SDL_Rect rect = {wall->x, wall->y, wall->width, wall->height};
-    SDL_SetRenderDrawColor(renderer, 207, 99, 85, 255);
+    
+    // this sets the colour of the walls, where the first 3 numbers are the rgb values, 
+    // and the last is the alpha value (255 means solid, 0 means transparent)
+    SDL_SetRenderDrawColor(renderer, 2, 64, 199, 255);  
+    
     SDL_RenderFillRect(renderer, &rect);
     SDL_RenderDrawRect(renderer, &rect);
 }

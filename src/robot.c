@@ -159,7 +159,7 @@ int checkRobotSensorRightAllWalls(struct Robot * robot, struct Wall_collection *
 void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
     double xDir, yDir;
 
-    int robotCentreX, robotCentreY, xTR, yTR, xTL, yTL, xBR, yBR, xBL, yBL;
+    int robotCentreX, robotCentreY, xTR, yTR, xTL, yTL, xBR, yBR, xBL, yBL xDirInt, yDirInt;
     SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
 
     /*
@@ -179,6 +179,15 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
     yDirInt = robot->y+ROBOT_HEIGHT/2+ (int) yDir;
     SDL_RenderDrawLine(renderer,robot->x+ROBOT_WIDTH/2, robot->y+ROBOT_HEIGHT/2, xDirInt, yDirInt);
     */
+
+    // this will change the image of the robot to a 20x20 mooshroom bitmap image,
+    // where all the instructions were specified in ed post #829
+    SDL_Rect rect = {robot->x, robot->y, robot->height, robot->width};
+    SDL_Surface * img = SDL_LoadBMP("mooshroom.bmp");
+    SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, img);
+    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    SDL_RenderCopyEx(renderer, texture, NULL, &rect, robot->angle, NULL, flip);
+    SDL_DestroyTexture(texture);
 
     //Rotating Square
     //Vector rotation to work out corners x2 = x1cos(angle)-y1sin(angle), y2 = x1sin(angle)+y1cos(angle)
@@ -205,10 +214,14 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
     xTL = (int) xDir;
     yTL = (int) yDir;
 
+    // this is commented out as we added a custom image to the robot before
+    // all this does is create a rectangular outline under the image
+    /*
     SDL_RenderDrawLine(renderer,xTR, yTR, xBR, yBR);
     SDL_RenderDrawLine(renderer,xBR, yBR, xBL, yBL);
     SDL_RenderDrawLine(renderer,xBL, yBL, xTL, yTL);
     SDL_RenderDrawLine(renderer,xTL, yTL, xTR, yTR);
+    */
 
     //Front Centre Sensor
     int sensor_sensitivity =  floor(SENSOR_VISION/5);
