@@ -16,7 +16,7 @@
 
 #define WALL_WIDTH 10
 
-#define DEFAULT_ANGLE_CHANGE 15
+#define DEFAULT_ANGLE_CHANGE 10
 #define DEFAULT_SPEED_CHANGE 1
 #define MAX_ROBOT_SPEED 25
 #define PI 3.14159265
@@ -47,6 +47,7 @@ struct Robot {
     int closeness;
     int speedLimit;
     int moveCodes[2];
+    //int totalAngle;
 };
 
 #endif // STRUCTURES_H_INCLUDED

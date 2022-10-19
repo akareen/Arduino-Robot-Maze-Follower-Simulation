@@ -86,16 +86,16 @@ int main(int argc, char *argv[]) {
         //Otherwise compute sensor information
         else {
             front_centre_sensor = checkRobotSensorFrontCentreAllWalls(&robot, head);
-            if (front_centre_sensor>0)
-                printf("Getting close on the centre. Score = %d\n", front_centre_sensor);
+            if (front_centre_sensor>0){}
+                //printf("Getting close on the centre. Score = %d\n", front_centre_sensor);
 
             left_sensor = checkRobotSensorLeftAllWalls(&robot, head);
-            if (left_sensor>0)
-                printf("Getting close on the left. Score = %d\n", left_sensor);
+            if (left_sensor>0){}
+                //printf("Getting close on the left. Score = %d\n", left_sensor);
 
             right_sensor = checkRobotSensorRightAllWalls(&robot, head);
-            if (right_sensor>0)
-                printf("Getting close on the right. Score = %d\n", right_sensor);
+            if (right_sensor>0){}
+                //printf("Getting close on the right. Score = %d\n", right_sensor);
         }
         robotUpdate(renderer, &robot);
         updateAllWalls(head, renderer);
