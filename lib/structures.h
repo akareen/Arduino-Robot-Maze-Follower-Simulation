@@ -45,7 +45,7 @@ struct Robot {
 
     int firstMove;
     int closeness;
-    int speedCap;
+    int speedLimit;
     int moveCodes[2];
 };
 
