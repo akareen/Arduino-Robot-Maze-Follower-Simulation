@@ -176,7 +176,7 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
     // this will change the image of the robot to a 20x20 mooshroom bitmap image,
     // where all the instructions were specified in ed post #829
     SDL_Rect rect = {robot->x, robot->y, robot->height, robot->width};
-    SDL_Surface * img = SDL_LoadBMP("mooshroom.bmp");
+    SDL_Surface * img = SDL_LoadBMP("arduino.bmp");
     SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, img);
     SDL_RendererFlip flip = SDL_FLIP_NONE;
     SDL_RenderCopyEx(renderer, texture, NULL, &rect, robot->angle, NULL, flip);
