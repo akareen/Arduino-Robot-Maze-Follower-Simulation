@@ -413,14 +413,14 @@ unsigned long lastLoops = 0;
 int narrowWait = 25;
 
 unsigned long lastTurnLoops = 0;
-int turnWait = 0;
+int turnWait = 1;
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
 
     loops++;
 
-    printf("front sensor:  %d\n", front_centre_sensor);
+    //printf("front sensor:  %d\n", front_centre_sensor);
     printf("right sensor:  %d\n", right_sensor);
         //Slow down for u-turns
     
@@ -453,6 +453,7 @@ int left_sensor, int right_sensor) {
     else if (left_sensor >= 2 && right_sensor >= 2) { //In a very narrow path
         robot -> closeness = 3;
         robot -> speedLimit = 4;
+        printf("Very Narrow");
         if (robot -> currentSpeed > 2) { //Slow it enought for turns
             slowDown(robot);
             return;
@@ -468,6 +469,7 @@ int left_sensor, int right_sensor) {
     }
 
     if (robot -> firstMove < 2) { // Move to the first right wall
+        angleChange = 10;
         robotMove = firstStep(robot, front_centre_sensor, right_sensor, left_sensor);
     } else if (robotMove){ //Follow right wall
         followLeftWall(front_centre_sensor, right_sensor, left_sensor, robot);
@@ -492,6 +494,12 @@ void followRightWall(int front_centre_sensor, int right_sensor, int left_sensor,
             turnLeft(robot);
         }
 
+        if (robot -> currentSpeed <= 1){
+            angleChange = 10;
+            turnRight(robot);
+            moveForward(robot);
+        }
+
     }else if (right_sensor == 0){
         if (loops - lastTurnLoops > turnWait){
             angleChange = 10;
@@ -509,8 +517,12 @@ void followRightWall(int front_centre_sensor, int right_sensor, int left_sensor,
         moveForward(robot);
         lastTurnLoops = loops;
     }
+    else if (right_sensor > robot -> closeness - 1){ //wat too close to right wall
+        angleChange = 15;
+        turnLeft(robot);
+    }
     else if (right_sensor > robot -> closeness){ //too close to right wall
-        angleChange = 10;
+        angleChange = 15;
         turnLeft(robot);
     }
 }
@@ -528,6 +540,13 @@ void followLeftWall(int front_centre_sensor, int right_sensor, int left_sensor, 
         } else {
             turnRight(robot);
         }
+
+        if (robot -> currentSpeed <= 1){
+            angleChange = 10;
+            turnLeft(robot);
+            moveForward(robot);
+        }
+
     }
     else if (left_sensor == 0){
         if (loops - lastTurnLoops > turnWait){
@@ -547,7 +566,7 @@ void followLeftWall(int front_centre_sensor, int right_sensor, int left_sensor, 
         lastTurnLoops = loops;
     }
     else if (left_sensor > robot -> closeness){ //too close to left wall
-        angleChange = 10;
+        angleChange = 15;
         turnRight(robot);
     }
 }
