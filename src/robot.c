@@ -403,6 +403,8 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
 // [0]: 0 = forward, 1 = down, 2 = left, 3 = right
 // [1]: number of consecutive
 
+int timer = 0;
+
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
     printf("SPEED:  %d\n", robot -> currentSpeed);
@@ -415,24 +417,32 @@ int left_sensor, int right_sensor) {
         return;
     }
     else if (left_sensor >= 1 && right_sensor >= 1) { //In a narrow path
-        robot -> speedLimit = 4;
+        robot -> speedLimit = 5;
+        robot -> closeness = 3;
         if (robot -> currentSpeed > 4) { //Slow it enought for turns
             slowDown(robot);
             return;
         }
     }
     else { //Normal top speed
-        robot -> speedLimit = 7; //This needs to be adjusted more
+        
     }
 
 
     if (robot -> firstMove < 2) { // Move to the first right wall
+        timer = 0;
         firstStep(robot, front_centre_sensor, right_sensor);
     }
     else if (front_centre_sensor >= 1) // wall ahead
         turnLeft(robot);
-    else if (right_sensor < robot -> closeness) //not close enough to right wall
-        turnRight(robot);
+    else if (right_sensor < robot -> closeness) { //not close enough to right wall
+        if (timer == 1 || right_sensor >= 1) {
+            turnRight(robot);
+            timer = 0;
+        }
+        else
+            timer++;
+    }
     else if (right_sensor == robot -> closeness) //close enough to right wall
         moveForward(robot);
     else if (right_sensor > robot -> closeness) //too close to right wall
