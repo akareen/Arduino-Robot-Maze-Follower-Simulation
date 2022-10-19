@@ -326,10 +326,10 @@ void updateMoveCodes(struct Robot * robot, int code) {
 }
 
 //Tells if the robot has looped
-int hasLooped(struct Robot * robot) {
-    return (robot -> moveCodes[0] == 2 || robot -> moveCodes[0] == 3) 
-    && robot -> moveCodes[1] >= 6 * 4; 
-}
+//int hasLooped(struct Robot * robot) {
+//    return (robot -> moveCodes[0] == 2 || robot -> moveCodes[0] == 3) 
+//    && robot -> moveCodes[1] >= 6 * 4; 
+//}
 
 //Accelerates the robot forward as long as it is under the custom speedLimi
 void moveForward(struct Robot * robot) {
