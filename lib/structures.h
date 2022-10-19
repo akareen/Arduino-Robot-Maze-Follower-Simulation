@@ -46,8 +46,8 @@ struct Robot {
     int firstMove;
     int closeness;
     int speedLimit;
-    int moveCodes[2];
-    //int totalAngle;
+    //int moveCodes[2];
+    long totalAngle;
 };
 
 #endif // STRUCTURES_H_INCLUDED

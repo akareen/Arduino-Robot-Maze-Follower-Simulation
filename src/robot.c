@@ -1,4 +1,5 @@
 #include "robot.h"
+#include "stdbool.h"
 
 void setup_robot(struct Robot *robot){
     robot -> x = OVERALL_WINDOW_WIDTH / 2 - 50;
@@ -13,18 +14,19 @@ void setup_robot(struct Robot *robot){
     robot -> crashed = 0;
     robot -> auto_mode = 0;
     
+    
     robot -> firstMove = 0;
     robot -> closeness = 2;
     //Must comply with regulations
     robot -> speedLimit = 7;
-    robot -> moveCodes[0] = 0;
-    robot -> moveCodes[1] = 0;
-    //robot -> totalAngle = 0;
+    //robot -> moveCodes[0] = 0;
+    //robot -> moveCodes[1] = 0;
 
     printf("Press arrow keys to move manually, or enter to move automatically\n\n");
 }
 
 int angleChange = 15;
+int totalAngle = 0;
 
 //Returns 1 if the robot is off the screen OTHERWISE Returns 0
 int robot_off_screen(struct Robot * robot){
@@ -286,9 +288,11 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
                 robot -> currentSpeed -= DEFAULT_SPEED_CHANGE;
                 resetToMaxSpeed(robot); break;
             case LEFT :
+                totalAngle -= angleChange;
                 robot -> angle = (robot -> angle + 360 - angleChange) % 360;
                 break;
             case RIGHT :
+                totalAngle += angleChange;
                 robot -> angle = (robot -> angle + angleChange) % 360;
                 break;
             case BRAKELEFT :
@@ -313,12 +317,12 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 
 //Stores consecutive movement, ex: 6 right turns = {3,6}
 void updateMoveCodes(struct Robot * robot, int code) {
-    if (robot -> moveCodes[0] == code)
-        robot -> moveCodes[1] += 1;
-    else {
-        robot -> moveCodes[0] = code;
-        robot -> moveCodes[1] = 1;
-    }
+   // if (robot -> moveCodes[0] == code)
+   //     robot -> moveCodes[1] += 1;
+   // else {
+   //     robot -> moveCodes[0] = code;
+   //     robot -> moveCodes[1] = 1;
+   // }
 }
 
 //Tells if the robot has looped
@@ -347,7 +351,7 @@ void slowDown(struct Robot * robot) {
 //Otherwise just turns left
 void turnLeft(struct Robot * robot) {
     updateMoveCodes(robot, 2);
-    //robot -> totalAngle += DEFAULT_ANGLE_CHANGE; 
+    
     if (robot -> currentSpeed > 3)
         robot -> direction = BRAKELEFT; // Brake and turn left same time
     else
@@ -358,7 +362,7 @@ void turnLeft(struct Robot * robot) {
 //Otherwise just turns right
 void turnRight(struct Robot * robot) {
     updateMoveCodes(robot, 3);
-    //robot -> totalAngle -= DEFAULT_ANGLE_CHANGE; 
+    
     if (robot -> currentSpeed > 3)
         robot -> direction = BRAKERIGHT; // Brake and turn right same time
     else
@@ -368,7 +372,7 @@ void turnRight(struct Robot * robot) {
 //First step of the program if there is a right wall it is finished
 //Otherwise it will do a 90 degree clockwise turn and move forward until it
 //finds a wall infront of it upon which it will turn left and exit the function
-int firstStep(struct Robot * robot, int front_sensor, int right_sensor, int left_sensor) {
+bool firstStep(struct Robot * robot, int front_sensor, int right_sensor, int left_sensor) {
     if (right_sensor > 1) {
         robot -> firstMove = 2;
         moveForward(robot);
@@ -376,36 +380,30 @@ int firstStep(struct Robot * robot, int front_sensor, int right_sensor, int left
     } else if (left_sensor > 1){
         robot -> firstMove = 2;
         moveForward(robot);
-        return 1;
+        return true;
     }
     
     if (robot -> firstMove == 0) {
         turnRight(robot);   
-        if (robot -> moveCodes[0] == 3 && robot -> moveCodes[1] >= 6) //90 degrees complete
+        if (totalAngle >= 30 || totalAngle <= -30) 
+            //printf("first move");
             robot -> firstMove++;
-        return 0;
+        return false;
     }
     else if (robot -> firstMove == 1) {            
         if (front_sensor >= 1) {
+            //printf("Second move");
             robot -> firstMove = 2;
             turnLeft(robot);
         }
         else
             moveForward(robot);
     }
-    return 0;
+    return true;
 }
 
-//TODO:
-//Account better for narrow paths
-//Insert some code that detects if the robot is stuck in a loop
-// Im thinking that we make a variable that stores the last turn
-//if the robot turned right 4 times (90 degrees) or turned left 4 times then it looped
 
-// Have added movecodes that stores the above, have not done loop code yet
-// int[] moveCodes: 
-// [0]: 0 = forward, 1 = down, 2 = left, 3 = right
-// [1]: number of consecutive
+
 
 int robotMove;
 unsigned long loops = 0;
@@ -414,70 +412,6 @@ int narrowWait = 25;
 
 unsigned long lastTurnLoops = 0;
 int turnWait = 1;
-
-void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
-int left_sensor, int right_sensor) {
-
-    loops++;
-
-    //printf("front sensor:  %d\n", front_centre_sensor);
-    printf("right sensor:  %d\n", right_sensor);
-        //Slow down for u-turns
-    
-    //if (robot-> totalAngle > 360 || robot-> totalAngle < -360){
-        //Robot has looped
-    //    printf("I have done a loop");
-
-    //}
-
-    //U-Turn Function
-    if (left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) {
-        if (robot -> currentSpeed > 0) //Get to a complete stop in a u-turn
-            slowDown(robot); 
-        else
-            turnLeft(robot);
-            //Reset the total angle counter
-        return;
-    } 
-    
-    //Deal with narrow paths
-    else if (left_sensor >= 1 && right_sensor >= 1) { //In a narrow path
-        robot -> closeness = 3;
-        robot -> speedLimit = 5;
-        if (robot -> currentSpeed > 4) { //Slow it enought for turns
-            slowDown(robot);
-            return;
-        }
-    }
-    //Very narrow paths
-    else if (left_sensor >= 2 && right_sensor >= 2) { //In a very narrow path
-        robot -> closeness = 3;
-        robot -> speedLimit = 4;
-        printf("Very Narrow");
-        if (robot -> currentSpeed > 2) { //Slow it enought for turns
-            slowDown(robot);
-            return;
-        }
-    }
-    else { 
-        //Normal top speed - only after a short delay
-        if ((loops - lastLoops) > narrowWait){
-            lastLoops = loops;
-            robot -> speedLimit = 6; //This needs to be adjusted more
-            robot -> closeness = 2;
-        }
-    }
-
-    if (robot -> firstMove < 2) { // Move to the first right wall
-        angleChange = 10;
-        robotMove = firstStep(robot, front_centre_sensor, right_sensor, left_sensor);
-    } else if (robotMove){ //Follow right wall
-        followLeftWall(front_centre_sensor, right_sensor, left_sensor, robot);
-    } else {
-        followRightWall(front_centre_sensor, right_sensor, left_sensor, robot);
-    }
-    
-}
 
 //Follow the right wall
 void followRightWall(int front_centre_sensor, int right_sensor, int left_sensor, struct Robot * robot){
@@ -569,4 +503,80 @@ void followLeftWall(int front_centre_sensor, int right_sensor, int left_sensor, 
         angleChange = 15;
         turnRight(robot);
     }
+}
+
+//TODO:
+//Account better for narrow paths
+//Insert some code that detects if the robot is stuck in a loop
+// Im thinking that we make a variable that stores the last turn
+//if the robot turned right 4 times (90 degrees) or turned left 4 times then it looped
+
+// Have added movecodes that stores the above, have not done loop code yet
+// int[] moveCodes: 
+// [0]: 0 = forward, 1 = down, 2 = left, 3 = right
+// [1]: number of consecutive
+
+
+void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
+int left_sensor, int right_sensor) {
+
+    loops++;
+
+    //printf("front sensor:  %d\n", front_centre_sensor);
+    //printf("total angle:  %d\n", totalAngle);
+
+    //Loop check - did the robot go in a circle:
+    //Should it check for one loop or two loops? maybe there will be a false positive on one loop
+    if (totalAngle < -360 || totalAngle > 360){
+        robotMove = !robotMove;
+        totalAngle = 0;
+    }
+
+    //U-Turn Function
+    if (left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) {
+        if (robot -> currentSpeed > 0) //Get to a complete stop in a u-turn
+            slowDown(robot); 
+        else
+            turnLeft(robot);
+            //Reset the total angle counter
+        return;
+    } 
+    
+    //Deal with narrow paths
+    else if (left_sensor >= 1 && right_sensor >= 1) { //In a narrow path
+        robot -> closeness = 3;
+        robot -> speedLimit = 5;
+        if (robot -> currentSpeed > 4) { //Slow it enought for turns
+            slowDown(robot);
+            return;
+        }
+    }
+    //Very narrow paths
+    else if (left_sensor >= 2 && right_sensor >= 2) { //In a very narrow path
+        robot -> closeness = 3;
+        robot -> speedLimit = 4;
+        printf("Very Narrow");
+        if (robot -> currentSpeed > 2) { //Slow it enought for turns
+            slowDown(robot);
+            return;
+        }
+    }
+    else { 
+        //Normal top speed - only after a short delay
+        if ((loops - lastLoops) > narrowWait){
+            lastLoops = loops;
+            robot -> speedLimit = 6; //This needs to be adjusted more
+            robot -> closeness = 2;
+        }
+    }
+
+    if (robot -> firstMove < 2) { // Move to the first right wall
+        angleChange = 10;
+        robotMove = firstStep(robot, front_centre_sensor, right_sensor, left_sensor);
+    } else if (robotMove){ //Follow right wall
+        followLeftWall(front_centre_sensor, right_sensor, left_sensor, robot);
+    } else {
+        followRightWall(front_centre_sensor, right_sensor, left_sensor, robot);
+    }
+    
 }
