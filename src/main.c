@@ -24,7 +24,7 @@ int crashed = 0;
 
 //Maze Number that determines the maze used
 int maze_number = 1;
-const static int TOTAL_MAZES = 11;
+const static int TOTAL_MAZES = 13;
 
 int init() {
         if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -107,11 +107,11 @@ int main(int argc, char *argv[]) {
                 done = 1;
             }
             const Uint8 *state = SDL_GetKeyboardState(NULL);
-            if(state[SDL_SCANCODE_UP] && robot.direction != DOWN){
-                robot.direction = UP;
+            if(state[SDL_SCANCODE_UP] && robot.direction != BRAKE){
+                robot.direction = ACCELERATE;
             }
-            if(state[SDL_SCANCODE_DOWN] && robot.direction != UP){
-                robot.direction = DOWN;
+            if(state[SDL_SCANCODE_DOWN] && robot.direction != ACCELERATE){
+                robot.direction = BRAKE;
             }
             if(state[SDL_SCANCODE_LEFT] && robot.direction != RIGHT){
                 robot.direction = LEFT;
