@@ -1,16 +1,16 @@
 # Project-Simulation
 ELEC1601 Robot Project Simulation
 
-**MAP PROGRESS 70%**
+**MAP PROGRESS 60%**
 - [x] 1
 - [x] 2
-- [x] 3
+- [ ] 3 (needs to go to right wall first)
 - [x] 4
-- [ ] 5 (is not handling narrow well) 
+- [ ] 5 (crashes at top right box) 
 - [x] 6
-- [ ] 7 (didnt go through narrow at end) 
+- [x] 7 
 - [x] 8
-- [x] 9 (only with a speed limit of 4 otherwise fails)
+- [ ] 9 (gets too close and dies at curve)
 - [ ] 10 (dies straight away)
 \
 \

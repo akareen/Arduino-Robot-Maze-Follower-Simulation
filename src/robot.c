@@ -19,6 +19,7 @@ void setup_robot(struct Robot *robot){
     robot -> closeness = 2;
     //Must comply with regulations
     robot -> speedLimit = 7;
+    robot -> totalAngle = 0;
     //robot -> moveCodes[0] = 0;
     //robot -> moveCodes[1] = 0;
 
@@ -288,11 +289,11 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
                 robot -> currentSpeed -= DEFAULT_SPEED_CHANGE;
                 resetToMaxSpeed(robot); break;
             case LEFT :
-                totalAngle -= angleChange;
+                robot -> totalAngle -= angleChange;
                 robot -> angle = (robot -> angle + 360 - angleChange) % 360;
                 break;
             case RIGHT :
-                totalAngle += angleChange;
+                robot -> totalAngle += angleChange;
                 robot -> angle = (robot -> angle + angleChange) % 360;
                 break;
             case BRAKELEFT :
@@ -385,7 +386,7 @@ bool firstStep(struct Robot * robot, int front_sensor, int right_sensor, int lef
     
     if (robot -> firstMove == 0) {
         turnRight(robot);   
-        if (totalAngle >= 30 || totalAngle <= -30) 
+        if (robot -> totalAngle >= 30 || robot -> totalAngle <= -30) 
             //printf("first move");
             robot -> firstMove++;
         return false;
@@ -527,9 +528,9 @@ int left_sensor, int right_sensor) {
 
     //Loop check - did the robot go in a circle:
     //Should it check for one loop or two loops? maybe there will be a false positive on one loop
-    if (totalAngle < -360 || totalAngle > 360){
+    if (robot -> totalAngle < -360 || robot -> totalAngle > 360){
         robotMove = !robotMove;
-        totalAngle = 0;
+        robot -> totalAngle = 0;
     }
 
     //U-Turn Function
