@@ -1,17 +1,18 @@
 # Project-Simulation
 ELEC1601 Robot Project Simulation
 
-**MAP PROGRESS 80% (excluding extra)**
+**MAP PROGRESS 100% (excluding extra)**
 - [x] 1
 - [x] 2
 - [x] 3
 - [x] 4
-- [ ] 5 (is not handling narrow well) 
+- [x] 5 
 - [x] 6
 - [x] 7 
-- [ ] 8 (choosing left instead of right)
+- [x] 8 
 - [x] 9
 - [x] 10
+\
 EXTRA
 - [ ] 11 (dies straight away)
 - [ ] 12 (dies straight away)
