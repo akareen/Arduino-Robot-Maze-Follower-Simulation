@@ -19,6 +19,7 @@ void setup_robot(struct Robot *robot){
     robot -> speedLimit = 7;
     robot -> moveCodes[0] = 0;
     robot -> moveCodes[1] = 0;
+    robot -> degrees = 0;
 
     printf("Press arrow keys to move manually, or enter to move automatically\n\n");
 }
@@ -312,6 +313,11 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 
 //Stores consecutive movement, ex: 6 right turns = {3,6}
 void updateMoveCodes(struct Robot * robot, int code) {
+    if (code == 2)
+        robot -> degrees -= 15;
+    if (code == 3)
+        robot -> degrees += 15;
+
     if (robot -> moveCodes[0] == code)
         robot -> moveCodes[1] += 1;
     else {

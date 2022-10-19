@@ -47,6 +47,7 @@ struct Robot {
     int closeness;
     int speedLimit;
     int moveCodes[2];
+    int degrees;
 };
 
 #endif // STRUCTURES_H_INCLUDED
