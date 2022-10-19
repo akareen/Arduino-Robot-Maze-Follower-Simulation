@@ -410,7 +410,7 @@ int left_sensor, int right_sensor) {
     }
     else if (left_sensor >= 1 && right_sensor >= 1) { //In a narrow path
         robot -> speedLimit = 4;
-        if (robot -> currentSpeed > 3) { //Slow it enought for turns
+        if (robot -> currentSpeed > 4) { //Slow it enought for turns
             slowDown(robot);
             return;
         }
