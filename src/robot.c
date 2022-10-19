@@ -16,7 +16,7 @@ void setup_robot(struct Robot *robot){
     robot -> firstMove = 0;
     robot -> closeness = 2;
     //Must comply with regulations
-    robot -> speedCap = 7;
+    robot -> speedLimit = 7;
     robot -> moveCodes[0] = 0;
     robot -> moveCodes[1] = 0;
 
@@ -320,9 +320,15 @@ void updateMoveCodes(struct Robot * robot, int code) {
     }
 }
 
-//Accelerates the robot forward as long as it is under the custom speedCap
+//Tells if the robot has looped
+int hasLooped(struct Robot * robot) {
+    return (robot -> moveCodes[0] == 2 || robot -> moveCodes[0] == 3) 
+    && robot -> moveCodes[1] >= 6 * 4; 
+}
+
+//Accelerates the robot forward as long as it is under the custom speedLimi
 void moveForward(struct Robot * robot) {
-    if ((robot -> currentSpeed) < robot -> speedCap) {
+    if ((robot -> currentSpeed) < robot -> speedLimit) {
         robot -> direction = ACCELERATE;
         updateMoveCodes(robot, 0);
     }
@@ -382,7 +388,7 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
 
 //TODO:
 //Account better for narrow paths
-//Insert some code that detects if the robot is stuck in a loop\
+//Insert some code that detects if the robot is stuck in a loop
 // Im thinking that we make a variable that stores the last turn
 //if the robot turned right 4 times (90 degrees) or turned left 4 times then it looped
 
@@ -393,24 +399,24 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
-    if (left_sensor >= 1 && right_sensor >= 1) { //In a narrow path
-        robot -> speedCap = 4;
-        if (robot -> currentSpeed > 3) { //Slow it enought for turns
-            slowDown(robot);
-            return;
-        }
-    }
-    else { //Normal top speed
-        robot -> speedCap = 7; //This needs to be adjusted more
-    }
-
-    //Slow down for u-turns
+    printf("SPEED:  %d\n", robot -> currentSpeed);
+        //Slow down for u-turns
     if (left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) {
         if (robot -> currentSpeed > 0) //Get to a complete stop in a u-turn
             slowDown(robot); 
         else
             turnLeft(robot);
         return;
+    }
+    else if (left_sensor >= 1 && right_sensor >= 1) { //In a narrow path
+        robot -> speedLimit = 4;
+        if (robot -> currentSpeed > 3) { //Slow it enought for turns
+            slowDown(robot);
+            return;
+        }
+    }
+    else { //Normal top speed
+        robot -> speedLimit = 7; //This needs to be adjusted more
     }
 
 
