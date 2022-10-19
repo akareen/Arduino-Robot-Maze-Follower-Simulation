@@ -1,7 +1,7 @@
 # Project-Simulation
 ELEC1601 Robot Project Simulation
 
-**MAP PROGRESS 60%**
+**MAP PROGRESS 70%**
 - [x] 1
 - [x] 2
 - [ ] 3 (needs to go to right wall first)
@@ -10,8 +10,13 @@ ELEC1601 Robot Project Simulation
 - [x] 6
 - [x] 7 
 - [x] 8
-- [ ] 9 (gets too close and dies at curve)
-- [ ] 10 (dies straight away)
+- [x] 9 
+- [ ] 10 (gets too close and dies at curve)
+Extra
+- [ ] 11 (dies straight away)
+- [ ] 12 (clips corner)
+- [ ] 13 (trapped at top)
+
 \
 \
 **List of things to do:**
