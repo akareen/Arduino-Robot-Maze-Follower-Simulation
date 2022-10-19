@@ -1,18 +1,37 @@
 # Project-Simulation
 ELEC1601 Robot Project Simulation
 
-**MAP PROGRESS 60%**
-* 1 yes
-* 2 yes
-* 3 yes
-* 4 yes 
-* 5 no (is not handling narrow well) 
-* 6 yes 
-* 7 no (didnt go through narrow at end) 
-* 8 yes 
-* 9 yes 
-* 10 no (dies straight away)
-
+**MAP PROGRESS 70%**
+- [x] 1
+- [x] 2
+- [x] 2
+- [x] 3
+- [x] 4
+- [ ] 5 (is not handling narrow well) 
+- [x] 6
+- [ ] 7 (didnt go through narrow at end) 
+- [x] 8
+- [x] 9 (only with a speed limit of 4 otherwise fails)
+- [ ] 10 (dies straight away)
+\
+\
+**List of things to do:**
+* Improve the algorithm for the robot (various steps including curves)
+* Make it pass all mazes
+* Stop it from overshooting the left turn
+* Incorporate acceleration and momentum
+* Refine the speed
+* Fix minor bugs for changing maze
+\
+\
+**List of things to do if time permits**
+* Add timer to GUI
+* Learn the maze the first time around to make it faster for subsequent runs. 
+This can be done by creating an integer array with a code for each movement the
+robot has made. When the robot is a few steps away from a turn it can decelerate.
+This will mean the robot can accelerate faster in a straight line and slow down for a turn.
+\
+\
 **Current progress:**
 * Reduced code length
 * Added comments to clarify functionality
@@ -21,19 +40,8 @@ ELEC1601 Robot Project Simulation
 * Mazes can now be changed automatically, press N for next maze, B for previous
 * Brake at the same time as turning
 * Improved GUI of the simulation
-
-
-**List of things to do:**
-* Add timer to GUI
-* Improve the algorithm for the robot (various steps including curves)
-* Improve on mazes not working on
-* Incorporate acceleration and momentum
-* Fix minor bugs for changing maze
-* Learn the maze the first time around to make it faster for subsequent runs. 
-This can be done by creating an integer array with a code for each movement the
-robot has made. When the robot is a few steps away from a turn it can decelerate.
-This will mean the robot can accelerate faster in a straight line and slow down for a turn.
-
+\
+\
 **Rules to be aware of:**
 * Maximum speed change of 1 (per timestep), 
     use 0.0 - 1.0 to make it smoother
