@@ -4,7 +4,6 @@ ELEC1601 Robot Project Simulation
 **MAP PROGRESS 70%**
 - [x] 1
 - [x] 2
-- [x] 2
 - [x] 3
 - [x] 4
 - [ ] 5 (is not handling narrow well) 
