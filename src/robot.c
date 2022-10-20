@@ -514,14 +514,13 @@ void followLeftWall(int front_centre_sensor, int right_sensor, int left_sensor, 
 // [0]: 0 = forward, 1 = down, 2 = left, 3 = right
 // [1]: number of consecutive
 
-
+bool doingUturn = false;
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
 
     loops++;
 
-    printf("Robotmove:  %d\n", robotMove);
     //printf("total angle:  %d\n", totalAngle);
 
     //Loop check - did the robot go in a circle:
@@ -532,16 +531,24 @@ int left_sensor, int right_sensor) {
     }
 
     //Navigation Basic
-    if ((left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1)) {
-        if (robot -> currentSpeed > 0) //Get to a complete stop in a u-turn
+    if ((left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) || doingUturn) {
+        if (robot -> currentSpeed > 0){
             slowDown(robot); 
-        else
+            printf("speed:  %d\n", robot->currentSpeed);
+        } //Get to a complete stop in a u-turn
+            
+        else {
+            doingUturn = true;
             lastMoveLoops = loops;
             if (robotMove == 1){
                 turnLeft(robot);
             } else if (robotMove == 0){
                 turnRight(robot);
             }
+            if (front_centre_sensor == 0){
+                doingUturn = false;
+            }
+        }
         return;
     } 
     
