@@ -531,7 +531,7 @@ int left_sensor, int right_sensor) {
     //}
 
     //Navigation Basic
-    if ((left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) || doingUturn) {
+     if ((left_sensor >= 2 && right_sensor >=2 && front_centre_sensor >= 1) || doingUturn) {
         if (robot -> currentSpeed > 0){
             slowDown(robot); 
             printf("speed:  %d\n", robot->currentSpeed);
@@ -548,6 +548,21 @@ int left_sensor, int right_sensor) {
             if (front_centre_sensor == 0){
                 doingUturn = false;
             }
+        }
+        return;
+    } 
+    else if ((left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) || doingUturn) {
+        if (robot -> currentSpeed > 0){
+            slowDown(robot); 
+            printf("speed:  %d\n", robot->currentSpeed);
+        } //Get to a complete stop in a u-turn
+        
+        if (robotMove == 1){
+            slowDown(robot);
+            turnLeft(robot);
+        } else if (robotMove == 0){
+            slowDown(robot);
+            turnRight(robot);
         }
         return;
     } 
