@@ -375,10 +375,10 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
 
 
 // AUTO MOVEMENT FUNCTION
-void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
+void robotAutoMotorMove(struct Robot * robot, int front_sensor, 
 int left_sensor, int right_sensor) {
-    
-    if (left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) {
+
+    if (left_sensor >= 1 && right_sensor >= 1 && front_sensor >= 1) {
         if (robot -> currentSpeed > 0) //Get to a complete stop in a u-turn
             slowDown(robot); 
         else
@@ -396,10 +396,10 @@ int left_sensor, int right_sensor) {
 
 
     if (robot -> firstMove < 2) // Move to the first right wall
-        firstStep(robot, front_centre_sensor, right_sensor);
-    else if (front_centre_sensor == 1 && right_sensor < robot -> closeness)
+        firstStep(robot, front_sensor, right_sensor);
+    else if (front_sensor == 1 && right_sensor < robot -> closeness)
         turnRight(robot);
-    else if (front_centre_sensor >= 1) // wall ahead
+    else if (front_sensor >= 1) // wall ahead
         turnLeft(robot);
     else if (right_sensor < robot -> closeness) { //not close enough to right wall
         if (robot -> timer == 1 || right_sensor >= 1) {
