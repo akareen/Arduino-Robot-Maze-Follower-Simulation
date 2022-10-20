@@ -452,10 +452,6 @@ void followRightWall(int front_centre_sensor, int right_sensor, int left_sensor,
         moveForward(robot);
         lastTurnLoops = loops;
     }
-    else if (right_sensor > robot -> closeness - 1){ //wat too close to right wall
-        angleChange = 15;
-        turnLeft(robot);
-    }
     else if (right_sensor > robot -> closeness){ //too close to right wall
         angleChange = 15;
         turnLeft(robot);
@@ -517,29 +513,31 @@ void followLeftWall(int front_centre_sensor, int right_sensor, int left_sensor, 
 // [0]: 0 = forward, 1 = down, 2 = left, 3 = right
 // [1]: number of consecutive
 
-
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
 
     loops++;
 
-    //printf("front sensor:  %d\n", front_centre_sensor);
+    printf("Robotmove:  %d\n", robotMove);
     //printf("total angle:  %d\n", totalAngle);
 
     //Loop check - did the robot go in a circle:
     //Should it check for one loop or two loops? maybe there will be a false positive on one loop
-    if (robot -> totalAngle < -360 || robot -> totalAngle > 360){
+    if (robot -> totalAngle < -450 || robot -> totalAngle > 450){
         robotMove = !robotMove;
         robot -> totalAngle = 0;
     }
 
     //U-Turn Function
-    if (left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) {
+    if ((left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1)) {
         if (robot -> currentSpeed > 0) //Get to a complete stop in a u-turn
             slowDown(robot); 
         else
-            turnLeft(robot);
-            //Reset the total angle counter
+            if (robotMove == 1){
+                turnLeft(robot);
+            } else if (robotMove == 0){
+                turnRight(robot);
+            }
         return;
     } 
     
