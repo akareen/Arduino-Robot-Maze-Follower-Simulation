@@ -394,13 +394,16 @@ int left_sensor, int right_sensor) {
         }
     }
 
-
-    if (robot -> firstMove < 2) // Move to the first right wall
+    if (robot -> firstMove < 2)  
         firstStep(robot, front_sensor, right_sensor);
-    else if (front_sensor == 1 && right_sensor < robot -> closeness)
+    else if (front_sensor == 1 && right_sensor < robot -> closeness) {
         turnRight(robot);
-    else if (front_sensor >= 1) // wall ahead
+        robot -> timer = 0;
+    }
+    else if (front_sensor >= 1) { // wall ahead
         turnLeft(robot);
+        robot -> timer = 0;
+    }
     else if (right_sensor < robot -> closeness) { //not close enough to right wall
         if (robot -> timer == 1 || right_sensor >= 1) {
             turnRight(robot);
@@ -409,8 +412,13 @@ int left_sensor, int right_sensor) {
         else
             robot -> timer += 1;
     }
-    else if (right_sensor == robot -> closeness) //close enough to right wall
+    else if (right_sensor == robot -> closeness) { //close enough to right wall
         moveForward(robot);
-    else if (right_sensor > robot -> closeness) //too close to right wall
+        robot -> timer = 0;
+    }
+
+    else if (right_sensor > robot -> closeness) { //too close to right wall
         turnLeft(robot);
+        robot -> timer = 0;
+    }
 }
