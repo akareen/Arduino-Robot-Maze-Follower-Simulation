@@ -525,10 +525,10 @@ int left_sensor, int right_sensor) {
 
     //Loop check - did the robot go in a circle:
     //Should it check for one loop or two loops? maybe there will be a false positive on one loop
-    if (robot -> totalAngle < -720 || robot -> totalAngle > 720){
-        robotMove = !robotMove;
-        robot -> totalAngle = 0;
-    }
+   // if (robot -> totalAngle < -720 || robot -> totalAngle > 720){
+    //    robotMove = !robotMove;
+    //    robot -> totalAngle = 0;
+    //}
 
     //Navigation Basic
     if ((left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) || doingUturn) {
