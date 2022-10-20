@@ -310,6 +310,9 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 }
 
 
+
+
+
 // **** OUR CUSTOM METHODS ****
 
 //Accelerates the robot forward as long as it is under the custom speedLimi
@@ -323,6 +326,7 @@ void slowDown(struct Robot * robot) {
     if ((robot -> currentSpeed) > 0)
         robot -> direction = BRAKE;
 }
+
 
 //If the speed is higher than 3 brakes and turns left at the same time
 //Otherwise just turns left
@@ -343,6 +347,7 @@ void turnRight(struct Robot * robot) {
     else
          robot -> direction = RIGHT;
 }
+
 
 //First step of the program if there is a right wall it is finished
 //Otherwise it will do a 90 degree clockwise turn and move forward until it
@@ -368,20 +373,11 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
     }
 }
 
-//TODO:
-//Account better for narrow paths
-//Insert some code that detects if the robot is stuck in a loop
-// Im thinking that we make a variable that stores the last turn
-//if the robot turned right 4 times (90 degrees) or turned left 4 times then it looped
 
-// Have added movecodes that stores the above, have not done loop code yet
-// int[] moveCodes: 
-// [0]: 0 = forward, 1 = down, 2 = left, 3 = right
-// [1]: number of consecutive
-
-
+// AUTO MOVEMENT FUNCTION
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
+    
     if (left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) {
         if (robot -> currentSpeed > 0) //Get to a complete stop in a u-turn
             slowDown(robot); 
