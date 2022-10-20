@@ -2,10 +2,10 @@
 ELEC1601 Robot Project Simulation
 
 **MAP PROGRESS 100% (excluding extra)**
-- [x] 1
-- [x] 2
-- [x] 3
-- [x] 4
+- [x] 1, 31secs
+- [x] 2, (problem atm wasnt there before)
+- [x] 3, 1:20
+- [x] 4, 29secs
 - [x] 5 
 - [x] 6
 - [x] 7 

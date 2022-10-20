@@ -17,9 +17,8 @@ void setup_robot(struct Robot *robot){
     robot -> closeness = 2;
     //Must comply with regulations
     robot -> speedLimit = 7;
-    robot -> moveCodes[0] = 0;
-    robot -> moveCodes[1] = 0;
     robot -> degrees = 0;
+    robot -> timer = 0;
 
     printf("Press arrow keys to move manually, or enter to move automatically\n\n");
 }
@@ -311,47 +310,24 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 }
 
 
-//Stores consecutive movement, ex: 6 right turns = {3,6}
-void updateMoveCodes(struct Robot * robot, int code) {
-    if (code == 2)
-        robot -> degrees -= 15;
-    if (code == 3)
-        robot -> degrees += 15;
-
-    if (robot -> moveCodes[0] == code)
-        robot -> moveCodes[1] += 1;
-    else {
-        robot -> moveCodes[0] = code;
-        robot -> moveCodes[1] = 1;
-    }
-}
-
-//Tells if the robot has looped
-int hasLooped(struct Robot * robot) {
-    return (robot -> moveCodes[0] == 2 || robot -> moveCodes[0] == 3) 
-    && robot -> moveCodes[1] >= 6 * 4; 
-}
+// **** OUR CUSTOM METHODS ****
 
 //Accelerates the robot forward as long as it is under the custom speedLimi
 void moveForward(struct Robot * robot) {
-    if ((robot -> currentSpeed) < robot -> speedLimit) {
+    if ((robot -> currentSpeed) < robot -> speedLimit)
         robot -> direction = ACCELERATE;
-        updateMoveCodes(robot, 0);
-    }
 }
 
 //Turns on the brakes as long as the robot is moving
 void slowDown(struct Robot * robot) {
-    if ((robot -> currentSpeed) > 0) {
+    if ((robot -> currentSpeed) > 0)
         robot -> direction = BRAKE;
-        updateMoveCodes(robot, 1);
-    }
 }
 
 //If the speed is higher than 3 brakes and turns left at the same time
 //Otherwise just turns left
 void turnLeft(struct Robot * robot) {
-    updateMoveCodes(robot, 2);
+    robot -> degrees -= 15;
     if (robot -> currentSpeed > 2)
         robot -> direction = BRAKELEFT; // Brake and turn left same time
     else
@@ -361,7 +337,7 @@ void turnLeft(struct Robot * robot) {
 //If the speed is higher than 3 brakes and turns right at the same time
 //Otherwise just turns right
 void turnRight(struct Robot * robot) {
-    updateMoveCodes(robot, 3);
+    robot -> degrees += 15;
     if (robot -> currentSpeed > 2)
         robot -> direction = BRAKERIGHT; // Brake and turn right same time
     else
@@ -379,7 +355,7 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
     
     if (robot -> firstMove == 0) {
         turnRight(robot);   
-        if (robot -> moveCodes[0] == 3 && robot -> moveCodes[1] >= 6) //90 degrees complete
+        if (robot -> degrees == 90) //90 degrees complete
             robot -> firstMove++;
     }
     else if (robot -> firstMove == 1) {            
@@ -403,11 +379,9 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
 // [0]: 0 = forward, 1 = down, 2 = left, 3 = right
 // [1]: number of consecutive
 
-int timer = 0;
 
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
-    printf("SPEED:  %d\n", robot -> currentSpeed);
     if (left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) {
         if (robot -> currentSpeed > 0) //Get to a complete stop in a u-turn
             slowDown(robot); 
@@ -416,7 +390,7 @@ int left_sensor, int right_sensor) {
         return;
     }
     else if (left_sensor >= 1 && right_sensor >= 1) { //In a narrow path
-        robot -> speedLimit = 5;
+        robot -> speedLimit = 4;
         robot -> closeness = 3;
         if (robot -> currentSpeed > 4) { //Slow it enought for turns
             slowDown(robot);
@@ -425,21 +399,19 @@ int left_sensor, int right_sensor) {
     }
 
 
-    if (robot -> firstMove < 2) { // Move to the first right wall
-        timer = 0;
+    if (robot -> firstMove < 2) // Move to the first right wall
         firstStep(robot, front_centre_sensor, right_sensor);
-    }
     else if (front_centre_sensor == 1 && right_sensor < robot -> closeness)
         turnRight(robot);
     else if (front_centre_sensor >= 1) // wall ahead
         turnLeft(robot);
     else if (right_sensor < robot -> closeness) { //not close enough to right wall
-        if (timer == 1 || right_sensor >= 1) {
+        if (robot -> timer == 1 || right_sensor >= 1) {
             turnRight(robot);
-            timer = 0;
+            robot -> timer = 0;
         }
         else
-            timer++;
+            robot -> timer += 1;
     }
     else if (right_sensor == robot -> closeness) //close enough to right wall
         moveForward(robot);
