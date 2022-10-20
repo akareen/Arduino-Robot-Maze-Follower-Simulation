@@ -377,7 +377,7 @@ bool firstStep(struct Robot * robot, int front_sensor, int right_sensor, int lef
     if (right_sensor > 1) {
         robot -> firstMove = 2;
         moveForward(robot);
-        return 0;
+        return false;
     } else if (left_sensor > 1){
         robot -> firstMove = 2;
         moveForward(robot);
@@ -403,16 +403,15 @@ bool firstStep(struct Robot * robot, int front_sensor, int right_sensor, int lef
     return true;
 }
 
-
-
-
 int robotMove;
 unsigned long loops = 0;
 unsigned long lastLoops = 0;
 int narrowWait = 25;
 
 unsigned long lastTurnLoops = 0;
+unsigned long lastMoveLoops = 0;
 int turnWait = 1;
+int uTurnWait = 2;
 
 //Follow the right wall
 void followRightWall(int front_centre_sensor, int right_sensor, int left_sensor, struct Robot * robot){
@@ -451,6 +450,7 @@ void followRightWall(int front_centre_sensor, int right_sensor, int left_sensor,
         angleChange = 10;
         moveForward(robot);
         lastTurnLoops = loops;
+        lastMoveLoops = loops;
     }
     else if (right_sensor > robot -> closeness){ //too close to right wall
         angleChange = 15;
@@ -495,6 +495,7 @@ void followLeftWall(int front_centre_sensor, int right_sensor, int left_sensor, 
         angleChange = 10;
         moveForward(robot);
         lastTurnLoops = loops;
+        lastMoveLoops = loops;
     }
     else if (left_sensor > robot -> closeness){ //too close to left wall
         angleChange = 15;
@@ -513,6 +514,8 @@ void followLeftWall(int front_centre_sensor, int right_sensor, int left_sensor, 
 // [0]: 0 = forward, 1 = down, 2 = left, 3 = right
 // [1]: number of consecutive
 
+
+
 void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
 int left_sensor, int right_sensor) {
 
@@ -528,11 +531,12 @@ int left_sensor, int right_sensor) {
         robot -> totalAngle = 0;
     }
 
-    //U-Turn Function
+    //Navigation Basic
     if ((left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1)) {
         if (robot -> currentSpeed > 0) //Get to a complete stop in a u-turn
             slowDown(robot); 
         else
+            lastMoveLoops = loops;
             if (robotMove == 1){
                 turnLeft(robot);
             } else if (robotMove == 0){
