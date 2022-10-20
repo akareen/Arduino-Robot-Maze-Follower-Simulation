@@ -16,7 +16,7 @@ ELEC1601 Robot Project Simulation
 EXTRA
 - [ ] 11 (dies straight away)
 - [ ] 12 (dies straight away)
-- [ ] 13 (at the end)
+- [x] 13
 \
 \
 **List of things to do:**
