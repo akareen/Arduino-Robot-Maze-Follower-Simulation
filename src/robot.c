@@ -525,7 +525,7 @@ int left_sensor, int right_sensor) {
 
     //Loop check - did the robot go in a circle:
     //Should it check for one loop or two loops? maybe there will be a false positive on one loop
-    if (robot -> totalAngle < -450 || robot -> totalAngle > 450){
+    if (robot -> totalAngle < -720 || robot -> totalAngle > 720){
         robotMove = !robotMove;
         robot -> totalAngle = 0;
     }
