@@ -343,8 +343,10 @@ void slowDown(struct Robot * robot) {
 //If the speed is higher than 3 brakes and turns left at the same time
 //Otherwise just turns left
 void turnLeft(struct Robot * robot) {    
-    if (robot -> currentSpeed > 3)
+    if (robot -> currentSpeed > 3 && robot -> speedLimit < 7)
         robot -> direction = BRAKELEFT; // Brake and turn left same time
+    else if (robot -> currentSpeed > 4)
+        robot -> direction = BRAKELEFT;
     else
         robot -> direction = LEFT;
 }
@@ -352,8 +354,10 @@ void turnLeft(struct Robot * robot) {
 //If the speed is higher than 3 brakes and turns right at the same time
 //Otherwise just turns right
 void turnRight(struct Robot * robot) {    
-    if (robot -> currentSpeed > 3)
+    if (robot -> currentSpeed > 3 && robot -> speedLimit < 7)
         robot -> direction = BRAKERIGHT; // Brake and turn right same time
+    else if (robot -> currentSpeed > 4)
+        robot -> direction = BRAKERIGHT;
     else
          robot -> direction = RIGHT;
 }
