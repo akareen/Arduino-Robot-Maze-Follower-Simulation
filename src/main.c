@@ -24,7 +24,7 @@ int crashed = 0;
 
 //Maze Number that determines the maze used
 int maze_number = 1;
-const static int TOTAL_MAZES = 13;
+const static int TOTAL_MAZES = 15;
 
 int init() {
         if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -50,7 +50,7 @@ int init() {
         //Setup maze
         setup_maze(&head, maze_number);
         //memset(&robot, 0, sizeof(robot));
-        setup_robot(&robot);
+        setup_robot(&robot, maze_number);
         updateAllWalls(head, renderer);
         return 0;
     };
@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
         robotMotorMove(&robot, crashed);
 
         //Check if robot reaches endpoint. and check sensor values
-        if (checkRobotReachedEnd(&robot, OVERALL_WINDOW_WIDTH, OVERALL_WINDOW_HEIGHT/2+100, 10, 100)){
+        if (checkRobotReachedEnd(&robot, 0, 20, 50, 60)){
             end_time = clock();
             msec = (end_time-start_time) * 1000 / CLOCKS_PER_SEC;
             robotSuccess(&robot, msec);
@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
                 robot.direction = RIGHT;
             }
             if(state[SDL_SCANCODE_SPACE]){
-                setup_robot(&robot);
+                setup_robot(&robot, maze_number);
             }
             if(state[SDL_SCANCODE_RETURN]){
                 robot.auto_mode = 1;

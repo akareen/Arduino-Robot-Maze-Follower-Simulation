@@ -1,29 +1,60 @@
 #include "robot.h"
+#include "stdbool.h"
 
-void setup_robot(struct Robot *robot){
-    robot -> x = OVERALL_WINDOW_WIDTH / 2 - 50;
-    robot -> y = OVERALL_WINDOW_HEIGHT - 50;
-    robot -> true_x = OVERALL_WINDOW_WIDTH / 2 - 50;
-    robot -> true_y = OVERALL_WINDOW_HEIGHT - 50;
-    robot -> width = ROBOT_WIDTH;
-    robot -> height = ROBOT_HEIGHT;
-    robot -> direction = 0;
-    robot -> angle = 0;
-    robot -> currentSpeed = 0;
-    robot -> crashed = 0;
-    robot -> auto_mode = 0;
+void setup_robot(struct Robot *robot, int mazeNumber) {
+    if (mazeNumber == 15) {
+        robot->x = 640-10-270;
+        robot->y = 460;
+        robot->true_x = 640-10-270;
+        robot->true_y = 460;
+        robot->width = ROBOT_WIDTH;
+        robot->height = ROBOT_HEIGHT;
+        robot->direction = 0;
+        robot->angle = 10;
+        robot->currentSpeed = 0;
+        robot->crashed = 0;
+        robot->auto_mode = 0;
+    }
+    else if (mazeNumber == 14) {
+        robot->x = 640-10-170;
+        robot->y = 460;
+        robot->true_x = 640-10-170;
+        robot->true_y = 460;
+        robot->width = ROBOT_WIDTH;
+        robot->height = ROBOT_HEIGHT;
+        robot->direction = 0;
+        robot->angle = 0;
+        robot->currentSpeed = 0;
+        robot->crashed = 0;
+        robot->auto_mode = 0;
+    }
+    else {
+        robot -> x = OVERALL_WINDOW_WIDTH / 2 - 50;
+        robot -> y = OVERALL_WINDOW_HEIGHT - 50;
+        robot -> true_x = OVERALL_WINDOW_WIDTH / 2 - 50;
+        robot -> true_y = OVERALL_WINDOW_HEIGHT - 50;
+        robot -> width = ROBOT_WIDTH;
+        robot -> height = ROBOT_HEIGHT;
+        robot -> direction = 0;
+        robot -> angle = 0;
+        robot -> currentSpeed = 0;
+        robot -> crashed = 0;
+        robot -> auto_mode = 0;
+    }
+
+    
     
     robot -> firstMove = 0;
     robot -> closeness = 2;
-    //Must comply with regulations
     robot -> speedLimit = 7;
-    robot -> degrees = 0;
-    robot -> timer = 0;
+    robot -> totalAngle = 0;
+
 
     printf("Press arrow keys to move manually, or enter to move automatically\n\n");
 }
 
-
+int angleChange = 15;
+int totalAngle = 0;
 
 //Returns 1 if the robot is off the screen OTHERWISE Returns 0
 int robot_off_screen(struct Robot * robot){
@@ -155,25 +186,8 @@ void robotUpdate(struct SDL_Renderer * renderer, struct Robot * robot){
     int robotCentreX, robotCentreY, xTR, yTR, xTL, yTL, xBR, yBR, xBL, yBL, xDirInt, yDirInt;
     SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
 
-    /*
-    //Other Display options:
-    // The actual square which the robot is tested against (not so nice visually with turns, but easier
-    // to test overlap
-    SDL_Rect rect = {robot->x, robot->y, robot->height, robot->width};
-    SDL_SetRenderDrawColor(renderer, 80, 80, 80, 255);
-    SDL_RenderDrawRect(renderer, &rect);
-    SDL_RenderFillRect(renderer, &rect);
-    */
-    /*
-    //Center Line of Robot. Line shows the direction robot is facing
-    xDir = -30 * sin(-robot->angle*PI/180);
-    yDir = -30 * cos(-robot->angle*PI/180);
-    xDirInt = robot->x+ROBOT_WIDTH/2+ (int) xDir;
-    yDirInt = robot->y+ROBOT_HEIGHT/2+ (int) yDir;
-    SDL_RenderDrawLine(renderer,robot->x+ROBOT_WIDTH/2, robot->y+ROBOT_HEIGHT/2, xDirInt, yDirInt);
-    */
 
-    // this will change the image of the robot to a 20x20 mooshroom bitmap image,
+    // this will change the image of the robot to a 20x20 mini arduino bitmap image,
     // where all the instructions were specified in ed post #829
     SDL_Rect rect = {robot->x, robot->y, robot->height, robot->width};
     SDL_Surface * img = SDL_LoadBMP("arduino.bmp");
@@ -277,7 +291,6 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
         robot -> currentSpeed = 0;
     else {
         switch(robot -> direction){
-            //Fix all of these to make it continuous not positional
             case ACCELERATE :
                 robot -> currentSpeed += DEFAULT_SPEED_CHANGE;
                 resetToMaxSpeed(robot); break;
@@ -285,18 +298,20 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
                 robot -> currentSpeed -= DEFAULT_SPEED_CHANGE;
                 resetToMaxSpeed(robot); break;
             case LEFT :
-                robot -> angle = (robot -> angle + 360 - DEFAULT_ANGLE_CHANGE) % 360;
+                robot -> totalAngle -= angleChange;
+                robot -> angle = (robot -> angle + 360 - angleChange) % 360;
                 break;
             case RIGHT :
-                robot -> angle = (robot -> angle + DEFAULT_ANGLE_CHANGE) % 360;
+                robot -> totalAngle += angleChange;
+                robot -> angle = (robot -> angle + angleChange) % 360;
                 break;
             case BRAKELEFT :
                 robot->currentSpeed -= DEFAULT_SPEED_CHANGE;
-                robot -> angle = (robot -> angle + 360 - DEFAULT_ANGLE_CHANGE) % 360;
+                robot -> angle = (robot -> angle + 360 - angleChange) % 360;
                 break;
             case BRAKERIGHT :
                 robot->currentSpeed -= DEFAULT_SPEED_CHANGE;
-                robot -> angle = (robot -> angle + DEFAULT_ANGLE_CHANGE) % 360;
+                robot -> angle = (robot -> angle + angleChange) % 360;
                 break;
 
         }
@@ -311,28 +326,24 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
 
 
 
-
-
-// **** OUR CUSTOM METHODS ****
-
 //Accelerates the robot forward as long as it is under the custom speedLimi
 void moveForward(struct Robot * robot) {
-    if ((robot -> currentSpeed) < robot -> speedLimit)
+    if ((robot -> currentSpeed) < robot -> speedLimit) {
         robot -> direction = ACCELERATE;
+    }
 }
 
 //Turns on the brakes as long as the robot is moving
 void slowDown(struct Robot * robot) {
-    if ((robot -> currentSpeed) > 0)
+    if ((robot -> currentSpeed) > 0) {
         robot -> direction = BRAKE;
+    }
 }
-
 
 //If the speed is higher than 3 brakes and turns left at the same time
 //Otherwise just turns left
-void turnLeft(struct Robot * robot) {
-    robot -> degrees -= 15;
-    if (robot -> currentSpeed > 2)
+void turnLeft(struct Robot * robot) {    
+    if (robot -> currentSpeed > 3)
         robot -> direction = BRAKELEFT; // Brake and turn left same time
     else
         robot -> direction = LEFT;
@@ -340,28 +351,32 @@ void turnLeft(struct Robot * robot) {
 
 //If the speed is higher than 3 brakes and turns right at the same time
 //Otherwise just turns right
-void turnRight(struct Robot * robot) {
-    robot -> degrees += 15;
-    if (robot -> currentSpeed > 2)
+void turnRight(struct Robot * robot) {    
+    if (robot -> currentSpeed > 3)
         robot -> direction = BRAKERIGHT; // Brake and turn right same time
     else
          robot -> direction = RIGHT;
 }
 
-
 //First step of the program if there is a right wall it is finished
 //Otherwise it will do a 90 degree clockwise turn and move forward until it
 //finds a wall infront of it upon which it will turn left and exit the function
-void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
+bool firstStep(struct Robot * robot, int front_sensor, int right_sensor, int left_sensor) {
     if (right_sensor > 1) {
         robot -> firstMove = 2;
         moveForward(robot);
+        return false;
+    } else if (left_sensor > 1){
+        robot -> firstMove = 2;
+        moveForward(robot);
+        return true;
     }
     
     if (robot -> firstMove == 0) {
         turnRight(robot);   
-        if (robot -> degrees == 90) //90 degrees complete
+        if (robot -> totalAngle >= 30 || robot -> totalAngle <= -30) 
             robot -> firstMove++;
+        return false;
     }
     else if (robot -> firstMove == 1) {            
         if (front_sensor >= 1) {
@@ -371,68 +386,189 @@ void firstStep(struct Robot * robot, int front_sensor, int right_sensor) {
         else
             moveForward(robot);
     }
+    return true;
 }
 
+int robotMove;
+unsigned long loops = 0;
+unsigned long lastLoops = 0;
+int narrowWait = 25;
 
-void followLeftWall(struct Robot * robot, int front_sensor, 
-int left_sensor, int right_sensor) {
+unsigned long lastTurnLoops = 0;
+unsigned long lastMoveLoops = 0;
+int turnWait = 1;
+int uTurnWait = 2;
 
-}
-
-void followRightWall(struct Robot * robot, int front_sensor, 
-int left_sensor, int right_sensor) {
-
-}
-
-// AUTO MOVEMENT FUNCTION
-void robotAutoMotorMove(struct Robot * robot, int front_sensor, 
-int left_sensor, int right_sensor) {
-
-    if (left_sensor >= 1 && right_sensor >= 1 && front_sensor >= 1) {
-        if (robot -> currentSpeed > 0) //Get to a complete stop in a u-turn
-            slowDown(robot); 
-        else
-            turnLeft(robot);
-        return;
+//Follow the right wall
+void followRightWall(int front_centre_sensor, int right_sensor, int left_sensor, struct Robot * robot) {
+    if (front_centre_sensor >= 3) {
+        turnLeft(robot);
+        angleChange = 15;
     }
+    else if (front_centre_sensor >= 1) {
+        slowDown(robot);
+        angleChange = 15;
+        if (right_sensor < robot -> closeness -1) {
+            turnRight(robot);
+        } else {
+            turnLeft(robot);
+        }
+
+        if (robot -> currentSpeed <= 1){
+            angleChange = 10;
+            turnRight(robot);
+            moveForward(robot);
+        }
+
+    }
+    else if (right_sensor == 0) {
+        if (loops - lastTurnLoops > turnWait){
+            angleChange = 10;
+            turnRight(robot);
+        } else {
+            moveForward(robot);
+        }
+    }
+    else if (right_sensor < robot -> closeness){ //not close enough to right wall
+        angleChange = 10;
+        turnRight(robot);
+    }
+    else if (right_sensor == robot -> closeness){ //close enough to right wall
+        angleChange = 10;
+        moveForward(robot);
+        lastTurnLoops = loops;
+        lastMoveLoops = loops;
+    }
+    else if (right_sensor > robot -> closeness){ //too close to right wall
+        angleChange = 15;
+        turnLeft(robot);
+    }
+}
+
+//Follow the left wall
+void followLeftWall(int front_centre_sensor, int right_sensor, int left_sensor, struct Robot * robot){
+    if (front_centre_sensor >= 3){
+        turnRight(robot);
+        angleChange = 15;
+    } 
+    else if (front_centre_sensor >= 1){
+        slowDown(robot);
+        angleChange = 15;
+        if (left_sensor < robot -> closeness -1) {
+            turnLeft(robot);
+        } else {
+            turnRight(robot);
+        }
+
+        if (robot -> currentSpeed <= 1){
+            angleChange = 10;
+            turnLeft(robot);
+            moveForward(robot);
+        }
+
+    }
+    else if (left_sensor == 0){
+        if (loops - lastTurnLoops > turnWait){
+            angleChange = 10;
+            turnLeft(robot);
+        } else {
+            moveForward(robot);
+        }
+    }
+    else if (left_sensor < robot -> closeness){ //not close enough to left wall
+        angleChange = 10;
+        turnLeft(robot);
+    }
+    else if (left_sensor == robot -> closeness){ //close enough to left wall
+        angleChange = 10;
+        moveForward(robot);
+        lastTurnLoops = loops;
+        lastMoveLoops = loops;
+    }
+    else if (left_sensor > robot -> closeness){ //too close to left wall
+        angleChange = 15;
+        turnRight(robot);
+    }
+}
+
+bool doingUturn = false;
+void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
+int left_sensor, int right_sensor) {
+
+    loops++;
+    //Navigation Basic
+     if ((left_sensor >= 2 && right_sensor >=2 && front_centre_sensor >= 1) || doingUturn) {
+        if (robot -> currentSpeed > 0){
+            slowDown(robot); 
+            printf("speed:  %d\n", robot->currentSpeed);
+        } //Get to a complete stop in a u-turn
+            
+        else {
+            doingUturn = true;
+            lastMoveLoops = loops;
+            if (robotMove == 1){
+                turnLeft(robot);
+            } else if (robotMove == 0){
+                turnRight(robot);
+            }
+            if (front_centre_sensor == 0){
+                doingUturn = false;
+            }
+        }
+        return;
+    } 
+    else if ((left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) || doingUturn) {
+        if (robot -> currentSpeed > 0){
+            slowDown(robot); 
+            printf("speed:  %d\n", robot->currentSpeed);
+        } //Get to a complete stop in a u-turn
+        
+        if (robotMove == 1){
+            slowDown(robot);
+            turnLeft(robot);
+        } else if (robotMove == 0){
+            slowDown(robot);
+            turnRight(robot);
+        }
+        return;
+    } 
+    
+    //Deal with narrow paths
     else if (left_sensor >= 1 && right_sensor >= 1) { //In a narrow path
-        robot -> speedLimit = 4;
         robot -> closeness = 3;
+        robot -> speedLimit = 5;
         if (robot -> currentSpeed > 4) { //Slow it enought for turns
             slowDown(robot);
             return;
         }
     }
-
-    if (robot -> firstMove < 2)  
-        firstStep(robot, front_sensor, right_sensor);
-    else if (front_sensor == 1 && right_sensor < robot -> closeness) {
-        turnRight(robot);
-        robot -> timer = 0;
-    }
-    else if (front_sensor >= 1) { // wall ahead
-        turnLeft(robot);
-        robot -> timer = 0;
-    }
-    else if (right_sensor < robot -> closeness) { //not close enough to right wall
-        if (robot -> closeness == 3) {
-            if (robot -> timer == 2 || right_sensor >= 1) {
-                turnRight(robot);
-                robot -> timer = 0;
-            }
-            else
-                robot -> timer += 1;
+    //Very narrow paths
+    else if (left_sensor >= 2 && right_sensor >= 2) { //In a very narrow path
+        robot -> closeness = 3;
+        robot -> speedLimit = 4;
+        printf("Very Narrow");
+        if (robot -> currentSpeed > 2) { //Slow it enought for turns
+            slowDown(robot);
+            return;
         }
-        else 
-            turnRight(robot);
     }
-    else if (right_sensor == robot -> closeness) { //close enough to right wall
-        moveForward(robot);
-        robot -> timer = 0;
+    else { 
+        //Normal top speed - only after a short delay
+        if ((loops - lastLoops) > narrowWait){
+            lastLoops = loops;
+            robot -> speedLimit = 6; //This needs to be adjusted more
+            robot -> closeness = 2;
+        }
     }
 
-    else if (right_sensor > robot -> closeness) { //too close to right wall
-        turnLeft(robot);
-        robot -> timer = 0;
+    if (robot -> firstMove < 2) { // Move to the first right wall
+        angleChange = 10;
+        robotMove = firstStep(robot, front_centre_sensor, right_sensor, left_sensor);
+    } 
+    else if (robotMove){ //Follow right wall
+        followLeftWall(front_centre_sensor, right_sensor, left_sensor, robot);
+    } 
+    else {
+        followRightWall(front_centre_sensor, right_sensor, left_sensor, robot);
     }
 }
