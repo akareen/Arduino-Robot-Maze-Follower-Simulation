@@ -556,7 +556,7 @@ int left_sensor, int right_sensor) {
         //Normal top speed - only after a short delay
         if ((loops - lastLoops) > narrowWait){
             lastLoops = loops;
-            robot -> speedLimit = 6; //This needs to be adjusted more
+            robot -> speedLimit = 7; //This needs to be adjusted more
             robot -> closeness = 2;
         }
     }

@@ -73,8 +73,16 @@ int main(int argc, char *argv[]) {
         // Put an else here the auto move should be seperate
         robotMotorMove(&robot, crashed);
 
+        int result = 0;
+        if (maze_number == 14)
+            result = checkRobotReachedEnd(&robot, 0, 20, 50, 60);
+        else if (maze_number == 15)
+            result = checkRobotReachedEnd(&robot, 0, 340, 50, 100);
+        else
+            result = checkRobotReachedEnd(&robot, OVERALL_WINDOW_WIDTH, OVERALL_WINDOW_HEIGHT/2+100, 10, 100);
+
         //Check if robot reaches endpoint. and check sensor values
-        if (checkRobotReachedEnd(&robot, 0, 20, 50, 60)){
+        if (result){
             end_time = clock();
             msec = (end_time-start_time) * 1000 / CLOCKS_PER_SEC;
             robotSuccess(&robot, msec);
