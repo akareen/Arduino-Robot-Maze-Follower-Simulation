@@ -43,18 +43,13 @@ void setup_robot(struct Robot *robot, int mazeNumber) {
     }
 
     
-    
     robot -> firstMove = 0;
     robot -> closeness = 2;
     robot -> speedLimit = 7;
     robot -> totalAngle = 0;
-
-
     printf("Press arrow keys to move manually, or enter to move automatically\n\n");
 }
-
 int angleChange = 15;
-int totalAngle = 0;
 
 //Returns 1 if the robot is off the screen OTHERWISE Returns 0
 int robot_off_screen(struct Robot * robot){
@@ -310,7 +305,7 @@ void robotMotorMove(struct Robot * robot, int crashed) { //take in a modifier do
                 robot -> angle = (robot -> angle + 360 - angleChange) % 360;
                 break;
             case BRAKERIGHT :
-                robot->currentSpeed -= DEFAULT_SPEED_CHANGE;
+                robot -> currentSpeed -= DEFAULT_SPEED_CHANGE;
                 robot -> angle = (robot -> angle + angleChange) % 360;
                 break;
 
@@ -343,7 +338,8 @@ void slowDown(struct Robot * robot) {
 //If the speed is higher than 3 brakes and turns left at the same time
 //Otherwise just turns left
 void turnLeft(struct Robot * robot) {    
-    if (robot -> currentSpeed > 3 && robot -> speedLimit < 7)
+    if (robot -> currentSpeed > 3 
+    && robot -> speedLimit < 7)
         robot -> direction = BRAKELEFT; // Brake and turn left same time
     else if (robot -> currentSpeed > 4)
         robot -> direction = BRAKELEFT;
@@ -354,8 +350,9 @@ void turnLeft(struct Robot * robot) {
 //If the speed is higher than 3 brakes and turns right at the same time
 //Otherwise just turns right
 void turnRight(struct Robot * robot) {    
-    if (robot -> currentSpeed > 3 && robot -> speedLimit < 7)
-        robot -> direction = BRAKERIGHT; // Brake and turn right same time
+    if (robot -> currentSpeed > 3 
+    && robot -> speedLimit < 7)
+        robot -> direction = BRAKERIGHT;
     else if (robot -> currentSpeed > 4)
         robot -> direction = BRAKERIGHT;
     else
@@ -378,7 +375,8 @@ bool firstStep(struct Robot * robot, int front_sensor, int right_sensor, int lef
     
     if (robot -> firstMove == 0) {
         turnRight(robot);   
-        if (robot -> totalAngle >= 30 || robot -> totalAngle <= -30) 
+        if (robot -> totalAngle >= 30 
+        || robot -> totalAngle <= -30) 
             robot -> firstMove++;
         return false;
     }
@@ -404,12 +402,12 @@ int turnWait = 1;
 int uTurnWait = 2;
 
 //Follow the right wall
-void followRightWall(int front_centre_sensor, int right_sensor, int left_sensor, struct Robot * robot) {
-    if (front_centre_sensor >= 3) {
+void followRightWall(int front_sensor, int right_sensor, int left_sensor, struct Robot * robot) {
+    if (front_sensor >= 3) {
         turnLeft(robot);
         angleChange = 15;
     }
-    else if (front_centre_sensor >= 1) {
+    else if (front_sensor >= 1) {
         slowDown(robot);
         angleChange = 15;
         if (right_sensor < robot -> closeness -1) {
@@ -450,12 +448,12 @@ void followRightWall(int front_centre_sensor, int right_sensor, int left_sensor,
 }
 
 //Follow the left wall
-void followLeftWall(int front_centre_sensor, int right_sensor, int left_sensor, struct Robot * robot){
-    if (front_centre_sensor >= 3){
+void followLeftWall(int front_sensor, int right_sensor, int left_sensor, struct Robot * robot){
+    if (front_sensor >= 3){
         turnRight(robot);
         angleChange = 15;
     } 
-    else if (front_centre_sensor >= 1){
+    else if (front_sensor >= 1){
         slowDown(robot);
         angleChange = 15;
         if (left_sensor < robot -> closeness -1) {
@@ -496,12 +494,12 @@ void followLeftWall(int front_centre_sensor, int right_sensor, int left_sensor, 
 }
 
 bool doingUturn = false;
-void robotAutoMotorMove(struct Robot * robot, int front_centre_sensor, 
+void robotAutoMotorMove(struct Robot * robot, int front_sensor, 
 int left_sensor, int right_sensor) {
 
     loops++;
     //Navigation Basic
-     if ((left_sensor >= 2 && right_sensor >=2 && front_centre_sensor >= 1) || doingUturn) {
+     if ((left_sensor >= 2 && right_sensor >=2 && front_sensor >= 1) || doingUturn) {
         if (robot -> currentSpeed > 0){
             slowDown(robot); 
             printf("speed:  %d\n", robot->currentSpeed);
@@ -515,13 +513,13 @@ int left_sensor, int right_sensor) {
             } else if (robotMove == 0){
                 turnRight(robot);
             }
-            if (front_centre_sensor == 0){
+            if (front_sensor == 0){
                 doingUturn = false;
             }
         }
         return;
     } 
-    else if ((left_sensor >= 1 && right_sensor >= 1 && front_centre_sensor >= 1) || doingUturn) {
+    else if ((left_sensor >= 1 && right_sensor >= 1 && front_sensor >= 1) || doingUturn) {
         if (robot -> currentSpeed > 0){
             slowDown(robot); 
             printf("speed:  %d\n", robot->currentSpeed);
@@ -567,12 +565,12 @@ int left_sensor, int right_sensor) {
 
     if (robot -> firstMove < 2) { // Move to the first right wall
         angleChange = 10;
-        robotMove = firstStep(robot, front_centre_sensor, right_sensor, left_sensor);
+        robotMove = firstStep(robot, front_sensor, right_sensor, left_sensor);
     } 
     else if (robotMove){ //Follow right wall
-        followLeftWall(front_centre_sensor, right_sensor, left_sensor, robot);
+        followLeftWall(front_sensor, right_sensor, left_sensor, robot);
     } 
     else {
-        followRightWall(front_centre_sensor, right_sensor, left_sensor, robot);
+        followRightWall(front_sensor, right_sensor, left_sensor, robot);
     }
 }
