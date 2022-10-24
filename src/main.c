@@ -54,64 +54,64 @@ int init() {
         //Competition mazes:
         //Basic Maze
 
-        insertAndSetFirstWall(head, 2,  640-10-220, 400, 10, 80);
-        insertAndSetFirstWall(head, 2,  640-200-20, 400, 200, 10);
-        insertAndSetFirstWall(head, 2,  640-10-20, 50, 10, 350);
-        insertAndSetFirstWall(head, 2,  640-280-20, 50, 280, 10);
-        insertAndSetFirstWall(head, 2,  640-10-300, 50, 10, 100);
-        insertAndSetFirstWall(head, 2,  640-110-300, 150, 110, 10);
-        insertAndSetFirstWall(head, 2,  640-10-400, 50, 10, 100);
-        insertAndSetFirstWall(head, 2,  640-400-220, 50, 220, 10);
-        insertAndSetFirstWall(head, 2,  640-10-620, 50, 10, 290);
-        insertAndSetFirstWall(head, 2,  640-620-20, 340, 20, 10);
+        insertAndSetFirstWall(&head, 2,  640-10-220, 400, 10, 80);
+        insertAndSetFirstWall(&head, 2,  640-200-20, 400, 200, 10);
+        insertAndSetFirstWall(&head, 2,  640-10-20, 50, 10, 350);
+        insertAndSetFirstWall(&head, 2,  640-280-20, 50, 280, 10);
+        insertAndSetFirstWall(&head, 2,  640-10-300, 50, 10, 100);
+        insertAndSetFirstWall(&head, 2,  640-110-300, 150, 110, 10);
+        insertAndSetFirstWall(&head, 2,  640-10-400, 50, 10, 100);
+        insertAndSetFirstWall(&head, 2,  640-400-220, 50, 220, 10);
+        insertAndSetFirstWall(&head, 2,  640-10-620, 50, 10, 290);
+        insertAndSetFirstWall(&head, 2,  640-620-20, 340, 20, 10);
 
 
-        insertAndSetFirstWall(head, 1,  640-10-320, 300, 10, 180);
-        insertAndSetFirstWall(head, 2,  640-200-120, 300, 200, 10);
-        insertAndSetFirstWall(head, 2,  640-10-120, 150, 10, 150);
-        insertAndSetFirstWall(head, 2,  640-80-120, 150, 80, 10);
-        insertAndSetFirstWall(head, 2,  640-10-200, 150, 10, 100);
-        insertAndSetFirstWall(head, 2,  640-310-200, 250, 310, 10);
-        insertAndSetFirstWall(head, 2,  640-10-500, 150, 10, 100);
-        insertAndSetFirstWall(head, 2,  640-20-500, 150, 20, 10);
-        insertAndSetFirstWall(head, 2,  640-10-520, 150, 10, 290);
-        insertAndSetFirstWall(head, 2,  640-120-520, 440, 120, 10);
+        insertAndSetFirstWall(&head, 1,  640-10-320, 300, 10, 180);
+        insertAndSetFirstWall(&head, 2,  640-200-120, 300, 200, 10);
+        insertAndSetFirstWall(&head, 2,  640-10-120, 150, 10, 150);
+        insertAndSetFirstWall(&head, 2,  640-80-120, 150, 80, 10);
+        insertAndSetFirstWall(&head, 2,  640-10-200, 150, 10, 100);
+        insertAndSetFirstWall(&head, 2,  640-310-200, 250, 310, 10);
+        insertAndSetFirstWall(&head, 2,  640-10-500, 150, 10, 100);
+        insertAndSetFirstWall(&head, 2,  640-20-500, 150, 20, 10);
+        insertAndSetFirstWall(&head, 2,  640-10-520, 150, 10, 290);
+        insertAndSetFirstWall(&head, 2,  640-120-520, 440, 120, 10);
 
 
         //Advanced maze:
 
         // int i;
-        // insertAndSetFirstWall(head, 12,  640-10-120, 450, 10, 30);
-        // insertAndSetFirstWall(head, 12,  640-10-220, 450, 10, 30);
+        // insertAndSetFirstWall(&head, 12,  640-10-120, 450, 10, 30);
+        // insertAndSetFirstWall(&head, 12,  640-10-220, 450, 10, 30);
 
         // for (i = 0; i < 100; i++){
-        //     insertAndSetFirstWall(head, i,  640-10-(20 + i) , 350 + i, 10, 10); //1
-        //     insertAndSetFirstWall(head, i,  640-10-(20 +100 + i) , 350 + i, 10, 10); //1
+        //     insertAndSetFirstWall(&head, i,  640-10-(20 + i) , 350 + i, 10, 10); //1
+        //     insertAndSetFirstWall(&head, i,  640-10-(20 +100 + i) , 350 + i, 10, 10); //1
         // }
-        // insertAndSetFirstWall(head, 12,  640-10-20, 280, 10, 70);
-        // insertAndSetFirstWall(head, 12,  640-10-120, 280, 10, 70);
+        // insertAndSetFirstWall(&head, 12,  640-10-20, 280, 10, 70);
+        // insertAndSetFirstWall(&head, 12,  640-10-120, 280, 10, 70);
 
         // for (i = 0; i < 180; i++){
-        //     insertAndSetFirstWall(head, i,  640-10-(20 +190 - i/2) , 100 + i, 10, 10); //1
+        //     insertAndSetFirstWall(&head, i,  640-10-(20 +190 - i/2) , 100 + i, 10, 10); //1
         // }
         // for (i = 0; i < 105; i++){
-        //     insertAndSetFirstWall(head, i,  640-10-(20 +105/2 - i/2) , 175 + i, 10, 10); //1
+        //     insertAndSetFirstWall(&head, i,  640-10-(20 +105/2 - i/2) , 175 + i, 10, 10); //1
         // }
 
 
-        // insertAndSetFirstWall(head, 2,  640-105/2-20, 175, 105/2, 10);
-        // insertAndSetFirstWall(head, 2,  640-10-20, 20, 10, 155);
-        // insertAndSetFirstWall(head, 2,  640-300-20, 20, 300, 10);
-        // insertAndSetFirstWall(head, 2,  640-10-320, 20, 10, 60);
-        // insertAndSetFirstWall(head, 2,  640-130-80, 100, 130, 10);
-        // insertAndSetFirstWall(head, 2,  640-10-80, 80, 10, 20);
-        // insertAndSetFirstWall(head, 2,  640-160-80, 80, 160, 10);
+        // insertAndSetFirstWall(&head, 2,  640-105/2-20, 175, 105/2, 10);
+        // insertAndSetFirstWall(&head, 2,  640-10-20, 20, 10, 155);
+        // insertAndSetFirstWall(&head, 2,  640-300-20, 20, 300, 10);
+        // insertAndSetFirstWall(&head, 2,  640-10-320, 20, 10, 60);
+        // insertAndSetFirstWall(&head, 2,  640-130-80, 100, 130, 10);
+        // insertAndSetFirstWall(&head, 2,  640-10-80, 80, 10, 20);
+        // insertAndSetFirstWall(&head, 2,  640-160-80, 80, 160, 10);
 
 
         // double j;
         // for (i = 0; i < 50; i++){
         //     j = i;
-        //     insertAndSetFirstWall(head, i+1,
+        //     insertAndSetFirstWall(&head, i+1,
         //                         // the most important bit is below.
         //                         // increase the 20 for a tighter bend
         //                         // descrease for a more meandering flow
@@ -122,7 +122,7 @@ int init() {
         // }
         // for (i = 0; i < 75; i++){
         //     j = i;
-        //     insertAndSetFirstWall(head, i+1,
+        //     insertAndSetFirstWall(&head, i+1,
         //                         // the most important bit is below.
         //                         // increase the 20 for a tighter bend
         //                         // descrease for a more meandering flow
@@ -132,17 +132,17 @@ int init() {
         //                         10, 10);
         // }
 
-        // insertAndSetFirstWall(head, 2,  640-105-345, 330, 105, 10);
-        // insertAndSetFirstWall(head, 2,  640-10-450, 190, 10, 150);
-        // insertAndSetFirstWall(head, 2,  640-70-380, 190, 70, 10);
-        // insertAndSetFirstWall(head, 2,  640-10-380, 20, 10, 170);
-        // insertAndSetFirstWall(head, 2,  640-260-380, 20, 260, 10);
+        // insertAndSetFirstWall(&head, 2,  640-105-345, 330, 105, 10);
+        // insertAndSetFirstWall(&head, 2,  640-10-450, 190, 10, 150);
+        // insertAndSetFirstWall(&head, 2,  640-70-380, 190, 70, 10);
+        // insertAndSetFirstWall(&head, 2,  640-10-380, 20, 10, 170);
+        // insertAndSetFirstWall(&head, 2,  640-260-380, 20, 260, 10);
 
-        // insertAndSetFirstWall(head, 2,  640-345-255, 455, 345, 10);
-        // insertAndSetFirstWall(head, 2,  640-10-600, 100, 10, 365);
-        // insertAndSetFirstWall(head, 2,  640-70-530, 100, 70, 10);
-        // insertAndSetFirstWall(head, 2,  640-10-530, 80, 10, 20);
-        // insertAndSetFirstWall(head, 2,  640-110-530, 80, 110, 10);
+        // insertAndSetFirstWall(&head, 2,  640-345-255, 455, 345, 10);
+        // insertAndSetFirstWall(&head, 2,  640-10-600, 100, 10, 365);
+        // insertAndSetFirstWall(&head, 2,  640-70-530, 100, 70, 10);
+        // insertAndSetFirstWall(&head, 2,  640-10-530, 80, 10, 20);
+        // insertAndSetFirstWall(&head, 2,  640-110-530, 80, 110, 10);
 
 
 
