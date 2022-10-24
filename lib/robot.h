@@ -12,7 +12,7 @@
 #include "math.h"
 
 //Setup
-void setup_robot(struct Robot *robot, int mazeNumber);
+void setup_robot(struct Robot *robot);
 
 //Error/Finish Checking
 int robot_off_screen(struct Robot * robot);

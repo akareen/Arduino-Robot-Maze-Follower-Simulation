@@ -1,48 +1,39 @@
 #include "robot.h"
 #include "stdbool.h"
 
-void setup_robot(struct Robot *robot, int mazeNumber) {
-    if (mazeNumber == 15) {
-        robot->x = 640-10-270;
-        robot->y = 460;
-        robot->true_x = 640-10-270;
-        robot->true_y = 460;
-        robot->width = ROBOT_WIDTH;
-        robot->height = ROBOT_HEIGHT;
-        robot->direction = 0;
-        robot->angle = 10;
-        robot->currentSpeed = 0;
-        robot->crashed = 0;
-        robot->auto_mode = 0;
-    }
-    else if (mazeNumber == 14) {
-        robot->x = 640-10-170;
-        robot->y = 460;
-        robot->true_x = 640-10-170;
-        robot->true_y = 460;
-        robot->width = ROBOT_WIDTH;
-        robot->height = ROBOT_HEIGHT;
-        robot->direction = 0;
-        robot->angle = 0;
-        robot->currentSpeed = 0;
-        robot->crashed = 0;
-        robot->auto_mode = 0;
-    }
-    else {
-        robot -> x = OVERALL_WINDOW_WIDTH / 2 - 50;
-        robot -> y = OVERALL_WINDOW_HEIGHT - 50;
-        robot -> true_x = OVERALL_WINDOW_WIDTH / 2 - 50;
-        robot -> true_y = OVERALL_WINDOW_HEIGHT - 50;
-        robot -> width = ROBOT_WIDTH;
-        robot -> height = ROBOT_HEIGHT;
-        robot -> direction = 0;
-        robot -> angle = 0;
-        robot -> currentSpeed = 0;
-        robot -> crashed = 0;
-        robot -> auto_mode = 0;
-    }
-
+void setup_robot(struct Robot *robot) {
     
+    //basic maze setup:
+
+    robot->x = 640-10-270;
+    robot->y = 460;
+    robot->true_x = 640-10-270;
+    robot->true_y = 460;
+    robot->width = ROBOT_WIDTH;
+    robot->height = ROBOT_HEIGHT;
+    robot->direction = 0;
+    robot->angle = 10;
+    robot->currentSpeed = 0;
+    robot->crashed = 0;
+    robot->auto_mode = 0;
+
+    //Complex maze setup:
+
+    // robot->x = 640-10-170;
+    // robot->y = 460;
+    // robot->true_x = 640-10-170;
+    // robot->true_y = 460;
+    // robot->width = ROBOT_WIDTH;
+    // robot->height = ROBOT_HEIGHT;
+    // robot->direction = 0;
+    // robot->angle = 0;
+    // robot->currentSpeed = 0;
+    // robot->crashed = 0;
+    // robot->auto_mode = 0;
+
+
+
+    //Our own variables
     robot -> firstMove = 0;
     robot -> closeness = 2;
     robot -> speedLimit = 7;
