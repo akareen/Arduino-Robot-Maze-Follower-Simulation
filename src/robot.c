@@ -5,31 +5,31 @@ void setup_robot(struct Robot *robot) {
     
     //basic maze setup:
 
-    robot->x = 640-10-270;
-    robot->y = 460;
-    robot->true_x = 640-10-270;
-    robot->true_y = 460;
-    robot->width = ROBOT_WIDTH;
-    robot->height = ROBOT_HEIGHT;
-    robot->direction = 0;
-    robot->angle = 10;
-    robot->currentSpeed = 0;
-    robot->crashed = 0;
-    robot->auto_mode = 0;
-
-    //Complex maze setup:
-
-    // robot->x = 640-10-170;
+    // robot->x = 640-10-270;
     // robot->y = 460;
-    // robot->true_x = 640-10-170;
+    // robot->true_x = 640-10-270;
     // robot->true_y = 460;
     // robot->width = ROBOT_WIDTH;
     // robot->height = ROBOT_HEIGHT;
     // robot->direction = 0;
-    // robot->angle = 0;
+    // robot->angle = 10;
     // robot->currentSpeed = 0;
     // robot->crashed = 0;
     // robot->auto_mode = 0;
+
+    //Complex maze setup:
+
+    robot->x = 640-10-170;
+    robot->y = 460;
+    robot->true_x = 640-10-170;
+    robot->true_y = 460;
+    robot->width = ROBOT_WIDTH;
+    robot->height = ROBOT_HEIGHT;
+    robot->direction = 0;
+    robot->angle = 0;
+    robot->currentSpeed = 0;
+    robot->crashed = 0;
+    robot->auto_mode = 0;
 
 
 
