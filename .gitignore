@@ -1,5 +1,5 @@
 *.exe
 main
 build
-.idea/
-.vscode/
+.idea/*
+.vscode/*
