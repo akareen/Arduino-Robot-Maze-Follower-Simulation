@@ -1,6 +1,6 @@
 # USYD ELEC1601 Arduino Maze Follower Simulation
 
-Created as a team project with: Mika Delevaux ([@*meface1*](https://github.com/meface1)) , Andrew Guo ([@*andrewguoo*](https://github.com/andrewguoo)), Adam Kareen (myself) and Jacob Kazem ([@yakk1](https://github.com/yakk*1)).
+Created as a team project with: Mika Delevaux ([@*meface1*](https://github.com/meface1)) , Andrew Guo ([@*andrewguoo*](https://github.com/andrewguoo)), Adam Kareen (myself) and Jacob Kazem ([@yakk1](https://github.com/yakk1)).
 
 Requires SDL2 to be installed to run.
 
@@ -77,7 +77,7 @@ We are proud of the maze testing program we have created. To effectively and rep
 
 The logic of the robot and the algorithm underlying its performance was created by the team accreddited above.
 
-The Maze switching portion of the code was created solely by Jacob Kazem ([@yakk1](https://github.com/yakk*1)).
+The Maze switching portion of the code was created solely by Jacob Kazem ([@yakk1](https://github.com/yakk1)).
 
 The underlying engine used in this simulation was created by the ELEC1601 staff at the University of Sydney. The unit coordinator for that unit is Dr. Boland.
 
